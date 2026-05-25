@@ -16,19 +16,14 @@ let foundPersonnel = await db.query.personnel.findMany();
 
 
 // await db.insert(personnel).values({
-//     name: "Антон ",
-//     lastName: "Кучеренко",
+//     name: "Антон Кучеренко",
 //     position: "Бухгалтер",
 //     city: "Москва",
 //     age: 19,
 //     summary: "Lorem ipsum dolor sit amet consectetur. Est pretium urna ut dui quis at turpis id.",
-//     education: [
-//         {
-//             period: "2005 - 2020",
-//             institution: "МГУ им. М.В. Ломоносова",
-//             faculty: "Юридический факультет"
-//         }
-//     ],
+//     period: "2005 - 2020",
+//     institution: "МГУ им. М.В. Ломоносова",
+//     faculty: "Юридический факультет",
 //     skills: ["HTML", "CSS", "NodeJS"],
 //     contact: "Телеграм @rNEZHu",
 //     categoryId: "019e5b50-743f-7000-ae6f-8e37e2609d59",
@@ -36,19 +31,14 @@ let foundPersonnel = await db.query.personnel.findMany();
 // });
 
 // await db.insert(personnel).values({
-//     name: "Александр ",
-//     lastName: "Иванов",
+//     name: "Александр Иванов",
 //     position: "Back-end",
 //     city: "Москва",
 //     age: 20,
 //     summary: "Lorem ipsum dolor sit amet consectetur. Est pretium urna ut dui quis at turpis id.",
-//     education: [
-//         {
-//             period: "2005 - 2020",
-//             institution: "МГУ им. М.В. Ломоносова",
-//             faculty: "Юридический факультет"
-//         }
-//     ],
+//     period: "2005 - 2020",
+//     institution: "МГУ им. М.В. Ломоносова",
+//     faculty: "Юридический факультет",
 //     skills: ["HTML", "CSS", "NodeJS"],
 //     contact: "Телеграм @rNEZHu",
 //     categoryId: "019e5b50-743f-7000-ae6f-8e37e2609d59",
@@ -56,19 +46,14 @@ let foundPersonnel = await db.query.personnel.findMany();
 // });
 
 // await db.insert(personnel).values({
-//     name: "Ангелина ",
-//     lastName: "Кучеренко",
+//     name: "Ангелина Кучеренко",
 //     position: "Бизнес аналитик",
 //     city: "Москва",
 //     age: 31,
 //     summary: "Lorem ipsum dolor sit amet consectetur. Est pretium urna ut dui quis at turpis id.",
-//     education: [
-//         {
-//             period: "2005 - 2020",
-//             institution: "МГУ им. М.В. Ломоносова",
-//             faculty: "Юридический факультет"
-//         }
-//     ],
+//     period: "2005 - 2020",
+//     institution: "МГУ им. М.В. Ломоносова",
+//     faculty: "Юридический факультет",
 //     skills: ["HTML", "CSS", "NodeJS"],
 //     contact: "Телеграм @rNEZHu",
 //     categoryId: "019e5b50-743f-7000-ae6f-8e37e2609d59",

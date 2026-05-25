@@ -11,22 +11,17 @@ export const commonFields = {
     createdAt: pg.timestamp("created_at").notNull().defaultNow(),
 }
 
-export interface EducationItem {
-    period: string;    
-    institution: string; 
-    faculty: string;    
-}
-
 export const personnel = pg.pgTable("personnel", {
     ...commonFields,
     avatar: pg.varchar("avatar", { length: 500 }),
     name: pg.varchar("name", { length: 255 }).notNull(),
-    lastName: pg.varchar("last_name", { length: 255 }).notNull(),
     position: pg.varchar("position", { length: 255 }).notNull(),
     city: pg.varchar("city", { length: 100 }).notNull(),
     age: pg.integer("age").notNull(),
     summary: pg.text("summary").notNull(),
-    education: pg.jsonb("education").$type<EducationItem[]>(),
+    period: pg.varchar("period", { length: 255 }).notNull(),
+    institution: pg.varchar("period", { length: 255 }).notNull(),
+    faculty: pg.varchar("period", { length: 255 }).notNull(),
     skills: pg.text("skills").array().notNull().default([]),
     contact: pg.varchar("contact", { length: 255 }).notNull(),
     categoryId: pg
