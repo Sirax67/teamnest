@@ -15,6 +15,13 @@
       "when": 1779725440921,
       "tag": "0001_married_ser_duncan",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779899263870,
+      "tag": "0002_last_mister_fear",
+      "breakpoints": true
     }
   ]
 }

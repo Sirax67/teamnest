@@ -20,8 +20,8 @@ export const personnel = pg.pgTable("personnel", {
     age: pg.integer("age").notNull(),
     summary: pg.text("summary").notNull(),
     period: pg.varchar("period", { length: 255 }).notNull(),
-    institution: pg.varchar("period", { length: 255 }).notNull(),
-    faculty: pg.varchar("period", { length: 255 }).notNull(),
+    institution: pg.varchar("institution", { length: 255 }).notNull(),
+    faculty: pg.varchar("faculty", { length: 255 }).notNull(),
     skills: pg.text("skills").array().notNull().default([]),
     contact: pg.varchar("contact", { length: 255 }).notNull(),
     categoryId: pg
@@ -75,7 +75,9 @@ export const specialtiesPersonnelRelations = relations(personnelSpecialties, ({ 
 export const startups = pg.pgTable("startups", {
     ...commonFields,
     name: pg.varchar("name", { length: 255 }).notNull(),
-    price: pg.integer("price").notNull(),
+    description: pg.text("description").notNull(),
+    link: pg.varchar("link").notNull(),
+    startDate: pg.date("start_date").notNull(),
     sectorId: pg
         .varchar("sector_id", { length: 255 })
         .notNull()
