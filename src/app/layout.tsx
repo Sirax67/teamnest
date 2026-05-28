@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Header from "../components/header";
+import Header from "../components/ui/header";
+import { Questions } from "../components/ui/questions";
+import { Footer } from "../components/ui/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,6 +43,8 @@ export default function RootLayout({
         <main className="">
           {children}
         </main>
+        <Questions/>
+        <Footer/>
       </body>
     </html>
   );

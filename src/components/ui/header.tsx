@@ -9,7 +9,7 @@ export default function Header() {
     const [isOpen, setIsOpen] = useState(false)
     return (
         <header className="px-10 w-full">
-            <div className="bg-gray-950 p-3 z-50 md:w-183 fixed rounded-2xl mx-4 mt-4 md:mx-auto left-0 right-0  flex gap-12 items-center justify-between">
+            <div className="bg-gray-950 p-3 z-50 md:w-170 fixed rounded-2xl mx-4 mt-4 md:mx-auto left-0 right-0  flex gap-12 items-center justify-between">
                 <Link href="/" className="w-35 h-5  relative">
                     <Image 
                     src="/images/Logo.svg"

@@ -56,7 +56,7 @@ function About () {
   return(
     <section className="py-12 px-16 text-center flex flex-col gap-12 items-center">
       
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 items-center">
         <h2 className="
           font-semibold 
           text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl 
