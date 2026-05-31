@@ -54,7 +54,7 @@ function Welcome() {
 
 function About () {
   return(
-    <section className="py-12 px-16 text-center flex flex-col gap-12 items-center">
+    <section className="py-12 px-16 text-center flex flex-col gap-12 items-center container mx-auto">
       
       <div className="flex flex-col gap-4 items-center">
         <h2 className="

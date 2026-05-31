@@ -13,13 +13,13 @@ export const commonFields = {
 
 export const personnel = pg.pgTable("personnel", {
     ...commonFields,
-    avatar: pg.varchar("avatar", { length: 500 }),
+    avatar: pg.varchar("avatar", { length: 500 }).default("/images/default-avatar.png"),
     name: pg.varchar("name", { length: 255 }).notNull(),
     position: pg.varchar("position", { length: 255 }).notNull(),
-    city: pg.varchar("city", { length: 100 }).notNull(),
+    city: pg.varchar("city", { length: 168 }).notNull(),
     age: pg.integer("age").notNull(),
     summary: pg.text("summary").notNull(),
-    period: pg.varchar("period", { length: 255 }).notNull(),
+    period: pg.varchar("period", { length: 50 }).notNull(),
     institution: pg.varchar("institution", { length: 255 }).notNull(),
     faculty: pg.varchar("faculty", { length: 255 }).notNull(),
     skills: pg.text("skills").array().notNull().default([]),
@@ -42,6 +42,10 @@ export const personnelCategories = pg.pgTable("personnel_category", {
 export const personnelSpecialties = pg.pgTable("personnel_specialties", {
     ...commonFields,
     name: pg.varchar("name", { length: 255 }).notNull(),
+    categoryId: pg
+        .varchar("category_id", { length: 255 })
+        .notNull()
+        .references(() => personnelCategories.id),
 });
 
 
@@ -53,17 +57,22 @@ export const personnelCategoriesRelations = relations(personnel, ({ one }) => ({
         references: [personnelCategories.id],
         fields: [personnel.categoryId],
     }),
+    specialty: one(personnelSpecialties, {
+        references: [personnelSpecialties.id],
+        fields: [personnel.specialtiesId],
+    }),
 }));
 
 export const categoriesPersonnelRelations = relations(personnelCategories, ({ many }) => ({
     personnel: many(personnel),
+    specialties: many(personnelSpecialties),
 }));
 
 
-export const personnelSpecialtiesRelations = relations(personnel, ({ one }) => ({
-    specialty: one(personnelSpecialties, {
-        references: [personnelSpecialties.id],
-        fields: [personnel.specialtiesId],
+export const personnelSpecialtiesRelations = relations(personnelSpecialties, ({ one, many }) => ({
+    category: one(personnelCategories, {
+        fields: [personnelSpecialties.categoryId],
+        references: [personnelCategories.id],
     }),
 }));
 
@@ -72,30 +81,28 @@ export const specialtiesPersonnelRelations = relations(personnelSpecialties, ({ 
 }));
 
 
+export const stageEnum = pg.pgEnum("stage_enum", [
+    "Идея",
+    "Разработка",
+    "Запуск",
+])
+
 export const startups = pg.pgTable("startups", {
     ...commonFields,
     name: pg.varchar("name", { length: 255 }).notNull(),
     description: pg.text("description").notNull(),
     link: pg.varchar("link").notNull(),
     startDate: pg.date("start_date").notNull(),
+    stage: stageEnum("stage").notNull().default("Идея"),
     sectorId: pg
         .varchar("sector_id", { length: 255 })
         .notNull()
         .references( () => startupsSectors.id),
-    stageId: pg
-        .varchar("stage_id", { length: 255 })
-        .notNull()
-        .references( () => startupsStages.id),
 });
 
 
 
 export const startupsSectors = pg.pgTable("startups_sectors", {
-    ...commonFields,
-    name: pg.varchar("name", { length: 255 }).notNull(),
-});
-
-export const startupsStages = pg.pgTable("startups_stages", {
     ...commonFields,
     name: pg.varchar("name", { length: 255 }).notNull(),
 });
@@ -112,14 +119,3 @@ export const sectorsStartupsRelations = relations(startupsSectors, ({ many }) =>
     startups: many(startups),
 }));
 
-
-export const startupsStagesRelations = relations(startups, ({ one }) => ({
-    stage: one(startupsStages, {
-        references: [startupsStages.id],
-        fields: [startups.stageId],
-    }),
-}));
-
-export const stageStartupsRelations = relations(startupsStages, ({ many }) => ({
-    stage: many(startups),
-}));

@@ -22,6 +22,20 @@
       "when": 1779899263870,
       "tag": "0002_last_mister_fear",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1780068173979,
+      "tag": "0003_bouncy_alex_power",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1780223695897,
+      "tag": "0004_nasty_thena",
+      "breakpoints": true
     }
   ]
 }

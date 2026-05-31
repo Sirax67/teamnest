@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Footer () {
     return(
-        <footer className="px-16 py-12 flex flex-col ">
+        <footer className="px-16 py-12 flex flex-col container mx-auto">
             <div className="hidden lg:flex flex-col gap-6">
                 <div className="flex items-center justify-between">
                     <div className="text-xl flex gap-6 items-center">
@@ -46,7 +46,7 @@ export function Footer () {
                             <Link href="/contacts" className=" hover:text-gray-600">Контакты</Link>
                         </nav>
                     </div>
-                    <p>©2023</p>
+                    <p>©2026</p>
                 </div>
             </div>
                     

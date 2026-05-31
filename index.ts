@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "./src/server/db";
-import { personnel, personnelCategories, personnelSpecialties, startups, startupsSectors, startupsStages } from "./src/server/db/schema";
+import { personnel, personnelCategories, personnelSpecialties, startups, startupsSectors} from "./src/server/db/schema";
 
-// let foundPersonnel = await db.query.personnel.findMany();
+// // let foundPersonnel = await db.query.personnel.findMany();
 // let foundStartups = await db.query.startups.findMany();
 
 // // console.log(foundPersonnel)
@@ -13,7 +13,8 @@ import { personnel, personnelCategories, personnelSpecialties, startups, startup
 // });
 
 // await db.insert(personnelSpecialties).values({
-//     name: "specialty1"
+//     name: "specialty1",
+//     categoryId: "019e5b50-743f-7000-ae6f-8e37e2609d59",
 // });
 
 // await db.insert(personnel).values({
@@ -36,16 +37,12 @@ import { personnel, personnelCategories, personnelSpecialties, startups, startup
 //     name: "Финансы"
 // });
 
-// await db.insert(startupsStages).values({
-//     name: "Разработка"
-// });
-
 // await db.insert(startups).values({
 //     name: "LifePatch",
 //     description: "LifePatch - это сервис, который помогает людям быстро «чинить» конкретные жизненные проблемы, а не проходить долгие курсы или читать тонны информации. Пользователь описывает ситуацию (например: конфликт на работе, нехватка денег к концу месяца, потеря мотивации, планирование переезда), а система выдает короткий персональный план действий на 3-7 дней с подсказками, шаблонами и напоминаниями. Жизнь - это набор «патчей», а не глобальных апдейтов.",
 //     link: "https://lifepatch.com",
 //     sectorId: "019e6a39-df43-7000-8765-d201246066fc",
-//     stageId: "019e6a39-df55-7000-94ef-ab935b9637d0",
+//     stage: "Разработка",
 //     startDate: "2026.05.27"
 // });
 

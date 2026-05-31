@@ -1,10 +1,9 @@
 import Elysia from "elysia";
 import { personnelRouter } from "./routers/personnel";
 import { categoriesRouter } from "./routers/categories";
-import { specialtiesRouter } from "./routers/specialties";
 import { startupsRouter } from "./routers/startups";
-import { stagesRouter } from "./routers/stage";
 import { sectorsRouter } from "./routers/sector";
+import { specialtiesRouter } from "./routers/specialties";
 
 export const app = new Elysia({
     prefix: "/api"
@@ -19,5 +18,4 @@ export const app = new Elysia({
 .use(categoriesRouter)
 .use(specialtiesRouter)
 .use(startupsRouter)
-.use(stagesRouter)
 .use(sectorsRouter)

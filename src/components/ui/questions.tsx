@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Questions () {
     return(
-        <section className="px-16 py-12">
+        <section className="px-16 py-12 container mx-auto">
             <div className="mx-auto bg-gray-100 border border-gray-200 rounded-2xl p-4 h-75 relative">
                 <div className="w-full z-0 lg:hidden ">
                     <Image
