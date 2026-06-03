@@ -18,9 +18,9 @@ export default function Header() {
                     className="object-cover object-center"></Image>
                 </Link>
                 <nav className="text-white gap-6 hidden lg:flex">
-                    <Link href="" className="hover:text-gray-200 transition">Кадры</Link>
-                    <Link href="" className="hover:text-gray-200 transition">Стартапы</Link>
-                    <Link href="" className="hover:text-gray-200 transition">Контакты</Link>
+                    <Link href="/personnel" className="hover:text-gray-200 transition">Кадры</Link>
+                    <Link href="/" className="hover:text-gray-200 transition">Стартапы</Link>
+                    <Link href="/" className="hover:text-gray-200 transition">Контакты</Link>
                 </nav>
                 <Link href="/" className="bg-white px-4 py-2 rounded-xl hover:bg-gray-100 transition hidden lg:flex">
                     Зарегистрироваться

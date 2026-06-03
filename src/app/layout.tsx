@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import Header from "../components/ui/header";
 import { Questions } from "../components/ui/questions";
 import { Footer } from "../components/ui/footer";
+import { QueryClientProvider } from "./query-client-provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,7 +42,10 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Header/>
         <main className="">
-          {children}
+          <QueryClientProvider>
+            {children}
+          </QueryClientProvider>
+          
         </main>
         <Questions/>
         <Footer/>

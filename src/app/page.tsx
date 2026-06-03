@@ -1,17 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import {AboutCard} from "../components/aboutCard";
+import { api } from "@/src/server/api";
 
-export default function Home() {
+export default  function Home() {
+  
   return (
     <div >
+        
         <Welcome/>
         <About/>
     </div>
   );
 }
 
-function Welcome() {
+ function Welcome() {
   return(
     <section className="w-full h-screen flex justify-center overflow-y-auto">
       <div className="w-full h-full absolute z-0 pointer-events-none">
@@ -52,11 +55,19 @@ function Welcome() {
   )
 }
 
-function About () {
+async function  About () {
+  const personnel = (await api.personnel.get()).data;
   return(
     <section className="py-12 px-16 text-center flex flex-col gap-12 items-center container mx-auto">
-      
+      <div className="flex flex-col text-red-500 border border-red-500 p-6">
+        {personnel?.map((personnel)  => (
+          <p key={personnel.id}>
+            {personnel.name}
+          </p>
+        ))}
+      </div>
       <div className="flex flex-col gap-4 items-center">
+        
         <h2 className="
           font-semibold 
           text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl 

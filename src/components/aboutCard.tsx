@@ -30,7 +30,7 @@ export function AboutCard () {
             {about.map((feature, index) => (
                 <div
                     key={index}
-                    className="p-4 bg-gray-100 border border-gray-200 flex flex-col gap-4 rounded-2xl max-w-103 hover:scale-105 transition duration-300"
+                    className="p-4 bg-gray-100 border border-gray-200 flex flex-col gap-4 rounded-2xl max-w-103"
                 >
                     <div className="relative h-56 md:h-64 ">
                         <Image
