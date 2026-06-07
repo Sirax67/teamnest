@@ -1,6 +1,6 @@
 import { z } from "zod/v4"
 
-export const categoryEnum = z.enum(["Разработка", "Дизайн", "Управление", "Маркетинг"], {message: "Введите категорию"})
+
 export const CategorySchema = z.object({
-    name: categoryEnum,
+    name: z.string({message: "Введите название категории"}).min(2, {message: "Название слишком короткое"}).max(255, {message: "Название слишком длинное"}),
 });
