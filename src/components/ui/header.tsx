@@ -19,10 +19,10 @@ export default function Header() {
                 </Link>
                 <nav className="text-white gap-6 hidden lg:flex">
                     <Link href="/personnel" className="hover:text-gray-200 transition">Кадры</Link>
-                    <Link href="/" className="hover:text-gray-200 transition">Стартапы</Link>
-                    <Link href="/" className="hover:text-gray-200 transition">Контакты</Link>
+                    <Link href="/startups" className="hover:text-gray-200 transition">Стартапы</Link>
+                    <Link href="/contacts" className="hover:text-gray-200 transition">Контакты</Link>
                 </nav>
-                <Link href="/" className="bg-white px-4 py-2 rounded-xl hover:bg-gray-100 transition hidden lg:flex">
+                <Link href="/auth/sign-in" className="bg-white px-4 py-2 rounded-xl hover:bg-gray-100 transition hidden lg:flex">
                     Зарегистрироваться
                 </Link>
                  <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden text-white">
@@ -57,7 +57,7 @@ export default function Header() {
                         </Link>
                     </nav>
                     <Link 
-                        href="/register" 
+                        href="/auth/sign-in" 
                         className="bg-gray-950 text-white px-4 py-2 rounded-xl text-center hover:bg-gray-900 transition w-full"
                         onClick={() => setIsOpen(false)}
                     >

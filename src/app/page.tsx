@@ -2,11 +2,16 @@ import Link from "next/link";
 import Image from "next/image";
 import {AboutCard} from "../components/aboutCard";
 import { api } from "@/src/server/api";
+import { auth } from "../server/auth/auth";
+import {headers as nextHeaders} from "next/headers"
 
-export default  function Home() {
-  
+export default async function Home() {
+  const session = await auth.api.getSession({
+    headers: await nextHeaders(),
+  });
+  console.log(session)
   return (
-    <div >
+    <div>
         
         <Welcome/>
         <About/>
