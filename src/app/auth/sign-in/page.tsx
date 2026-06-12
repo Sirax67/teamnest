@@ -13,7 +13,6 @@ export default function SignIn () {
     const schema = z.object({
         email: z.email(),
         password: z.string(),
-        name: z.string(),
     })
 
     const signInMutation = useMutation({
