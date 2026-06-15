@@ -4,14 +4,20 @@ import { and, eq } from "drizzle-orm";
 import { startups } from "../../db/schema";
 import z from "zod"; 
 import { StartupsSchema } from "@/src/app/lib/schemas/startups";
+import { UserService } from "./user";
 
 export const startupsRouter = new Elysia ({
     prefix: "/startups",
 })
+.use(UserService)
 .get("/", async () => {
     return await db.query.startups.findMany({
         where: eq(startups.isDeleted, false)
     })
+}, {
+    isSignedIn: true,
+    isAdmin: "ADMIN",
+    
 })
 .get(
     "/:id", 
@@ -27,6 +33,8 @@ export const startupsRouter = new Elysia ({
         params: z.object({
             id: z.string(),
         }),
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     },
 )
 
@@ -41,6 +49,8 @@ export const startupsRouter = new Elysia ({
     });
     },{
         body: StartupsSchema,
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     }
 )
 
@@ -53,7 +63,9 @@ export const startupsRouter = new Elysia ({
         body: StartupsSchema,
         params: z.object({
             id: z.string(),
-        })
+        }),
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     }
 )
 
@@ -67,5 +79,7 @@ export const startupsRouter = new Elysia ({
 }, {
     params: z.object({
         id: z.string(), 
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 });

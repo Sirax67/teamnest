@@ -4,15 +4,21 @@ import { personnel } from "../../db/schema";
 import { db } from "../../db";
 import z, { string } from "zod";
 import { PersonnelSchema } from "@/src/app/lib/schemas/personnel";
+import { UserService } from "./user";
 
 export const personnelRouter = new Elysia ({
     prefix: "/personnel",
 })
+.use(UserService)
 .get ("/", async () => {
     const foundPersonnel = await db.query.personnel.findMany({
         where: eq(personnel.isDeleted, false)
     })
     return foundPersonnel;
+}, {
+    isSignedIn: true,
+    isAdmin: "ADMIN",
+    
 })
 .get("/:id", async ({params}) => {
     const foundedPersonnel = await db.query.personnel.findFirst({
@@ -25,7 +31,9 @@ export const personnelRouter = new Elysia ({
 }, {
     params: z.object({
         id: string(),
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 })
 
 .post("/", async ({body}) => {
@@ -46,6 +54,8 @@ export const personnelRouter = new Elysia ({
     });
     },{
         body: PersonnelSchema,
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     }
 )
 
@@ -58,7 +68,9 @@ export const personnelRouter = new Elysia ({
         body: PersonnelSchema,
         params: z.object({
             id: z.string(),
-        })
+        }),
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     }
 )
 
@@ -72,5 +84,7 @@ export const personnelRouter = new Elysia ({
 }, {
     params: z.object({
         id: z.string(), 
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 });

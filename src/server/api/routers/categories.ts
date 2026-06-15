@@ -4,14 +4,20 @@ import { and, eq } from "drizzle-orm";
 import { personnelCategories } from "../../db/schema";
 import z from "zod";
 import { CategorySchema } from "@/src/app/lib/schemas/category";
+import { UserService } from "./user";
 
 export const categoriesRouter = new Elysia({
     prefix: "/categories"
 })
+.use(UserService)
 .get("/", async () => {
     return await db.query.personnelCategories.findMany({
         where: eq(personnelCategories.isDeleted, false),
     });
+}, {
+    isSignedIn: true,
+    isAdmin: "ADMIN",
+    
 })
 .get(
     "/:id",
@@ -27,6 +33,9 @@ export const categoriesRouter = new Elysia({
         params: z.object({
             id: z.string(),
         }),
+        
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     },
 )
 
@@ -36,6 +45,8 @@ export const categoriesRouter = new Elysia({
     });
 }, {
     body: CategorySchema,
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 })
 
 .put("/:id", async ({body, params}) => {
@@ -47,7 +58,9 @@ export const categoriesRouter = new Elysia({
     body: CategorySchema,
     params: z.object({
         id: z.string(),
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 }
 )
 
@@ -61,5 +74,8 @@ export const categoriesRouter = new Elysia({
 }, {
     params: z.object({
         id: z.string(), 
-    })
+    }),
+    
+        isSignedIn: true,
+        isAdmin: "ADMIN",
 });

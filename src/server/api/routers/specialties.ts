@@ -4,14 +4,20 @@ import { and, eq } from "drizzle-orm";
 import { personnelSpecialties} from "../../db/schema";
 import z from "zod";
 import { SpetialtiesSchema } from "@/src/app/lib/schemas/spetialties";
+import { UserService } from "./user";
 
 export const specialtiesRouter = new Elysia({
     prefix: "/specialties"
 })
+.use(UserService)
 .get("/", async () => {
     return await db.query.personnelSpecialties.findMany({
         where: eq(personnelSpecialties.isDeleted, false),
     });
+}, {
+    isSignedIn: true,
+    isAdmin: "ADMIN",
+    
 })
 .get(
     "/:id",
@@ -27,6 +33,8 @@ export const specialtiesRouter = new Elysia({
         params: z.object({
             id: z.string(),
         }),
+        isSignedIn: true,
+        isAdmin: "ADMIN",
     },
 )
 
@@ -38,6 +46,8 @@ export const specialtiesRouter = new Elysia({
     });
 }, {
     body: SpetialtiesSchema,
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 })
 
 .put("/:id", async ({body, params}) => {
@@ -49,7 +59,9 @@ export const specialtiesRouter = new Elysia({
     body: SpetialtiesSchema,
     params: z.object({
         id: z.string(),
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 }
 )
 
@@ -63,5 +75,7 @@ export const specialtiesRouter = new Elysia({
 }, {
     params: z.object({
         id: z.string(), 
-    })
+    }),
+    isSignedIn: true,
+    isAdmin: "ADMIN",
 });
