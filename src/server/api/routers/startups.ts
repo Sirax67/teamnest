@@ -16,7 +16,7 @@ export const startupsRouter = new Elysia ({
     })
 }, {
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
     
 })
 .get(
@@ -34,7 +34,7 @@ export const startupsRouter = new Elysia ({
             id: z.string(),
         }),
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     },
 )
 
@@ -50,7 +50,7 @@ export const startupsRouter = new Elysia ({
     },{
         body: StartupsSchema,
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     }
 )
 
@@ -65,7 +65,7 @@ export const startupsRouter = new Elysia ({
             id: z.string(),
         }),
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     }
 )
 
@@ -81,5 +81,5 @@ export const startupsRouter = new Elysia ({
         id: z.string(), 
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 });

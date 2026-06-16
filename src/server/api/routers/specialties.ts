@@ -16,7 +16,7 @@ export const specialtiesRouter = new Elysia({
     });
 }, {
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
     
 })
 .get(
@@ -34,7 +34,7 @@ export const specialtiesRouter = new Elysia({
             id: z.string(),
         }),
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     },
 )
 
@@ -47,7 +47,7 @@ export const specialtiesRouter = new Elysia({
 }, {
     body: SpetialtiesSchema,
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 })
 
 .put("/:id", async ({body, params}) => {
@@ -61,7 +61,7 @@ export const specialtiesRouter = new Elysia({
         id: z.string(),
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 }
 )
 
@@ -77,5 +77,5 @@ export const specialtiesRouter = new Elysia({
         id: z.string(), 
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 });

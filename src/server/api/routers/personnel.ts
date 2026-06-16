@@ -17,7 +17,7 @@ export const personnelRouter = new Elysia ({
     return foundPersonnel;
 }, {
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
     
 })
 .get("/:id", async ({params}) => {
@@ -33,7 +33,7 @@ export const personnelRouter = new Elysia ({
         id: string(),
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 })
 
 .post("/", async ({body}) => {
@@ -55,7 +55,7 @@ export const personnelRouter = new Elysia ({
     },{
         body: PersonnelSchema,
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     }
 )
 
@@ -70,7 +70,7 @@ export const personnelRouter = new Elysia ({
             id: z.string(),
         }),
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     }
 )
 
@@ -86,5 +86,5 @@ export const personnelRouter = new Elysia ({
         id: z.string(), 
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 });

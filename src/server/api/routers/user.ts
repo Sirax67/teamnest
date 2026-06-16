@@ -27,15 +27,15 @@ export const UserService = new Elysia ({name: "user/service"})
     })
 
     .macro ({
-        isAdmin: (requiredRole?: "ADMIN") => {
-            if (!requiredRole) return;
+        isAdmin: (enable?: boolean) => {
+            if (!enable) return;
 
             return {
                 beforeHandle({session, status}) {
                     if (!session?.user) {
                         return status(401, "Авторизуйтесь")
                     }
-                    if (session.user.role !== requiredRole) {
+                    if (session.user.role !== "ADMIN") {
                         return status(403, "Нет прав админа")
                     }
                 }

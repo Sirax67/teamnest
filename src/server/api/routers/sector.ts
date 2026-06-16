@@ -16,7 +16,7 @@ export const sectorsRouter = new Elysia({
     });
 }, {
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
     
 })
 .get(
@@ -35,7 +35,7 @@ export const sectorsRouter = new Elysia({
             
         }),
         isSignedIn: true,
-        isAdmin: "ADMIN",
+        isAdmin: true,
     },
 )
 
@@ -47,7 +47,7 @@ export const sectorsRouter = new Elysia({
 }, {
     body: SectorSchema,
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 })
 
 .put("/:id", async ({body, params}) => {
@@ -61,7 +61,7 @@ export const sectorsRouter = new Elysia({
         id: z.string(),
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
 }
 )
 
@@ -77,6 +77,6 @@ export const sectorsRouter = new Elysia({
         id: z.string(), 
     }),
     isSignedIn: true,
-    isAdmin: "ADMIN",
+    isAdmin: true,
     
 });
