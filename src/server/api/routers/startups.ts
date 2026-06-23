@@ -5,22 +5,39 @@ import { startups } from "../../db/schema";
 import z from "zod"; 
 import { StartupsSchema } from "@/src/app/lib/schemas/startups";
 import { UserService } from "./user";
+import { redis } from "../../redis";
 
 export const startupsRouter = new Elysia ({
     prefix: "/startups",
 })
 .use(UserService)
 .get("/", async () => {
-    return await db.query.startups.findMany({
-        where: eq(startups.isDeleted, false)
-    })
-}, {
-    isSignedIn: true,
-    isAdmin: true,
-    
+    const query = db.query.startups.findMany({
+        where: eq(startups.isDeleted, false),
+    });
+
+    type Star = Awaited<ReturnType<typeof query.execute>>
+
+    const cachedStartups = await redis.get("startups");
+
+    if(cachedStartups) {
+        return {
+            startups: JSON.parse(cachedStartups) as Star,
+        }
+    }
+
+    const startupsFromDb = await query.execute();
+
+    await redis.set(
+        "startups", 
+        JSON.stringify(startupsFromDb),
+        "EX",
+        60 * 60 * 24,
+    );
+    return startupsFromDb
 })
 .get(
-    "/:id", 
+    "/:id",
     async ({params}) => {
         return await db.query.startups.findFirst({
             where: and (
@@ -33,8 +50,6 @@ export const startupsRouter = new Elysia ({
         params: z.object({
             id: z.string(),
         }),
-        isSignedIn: true,
-        isAdmin: true,
     },
 )
 
@@ -47,10 +62,9 @@ export const startupsRouter = new Elysia ({
         stage: body.stage,
         sectorId: body.sectorId,
     });
+    await redis.del("startups"); 
     },{
         body: StartupsSchema,
-        isSignedIn: true,
-        isAdmin: true,
     }
 )
 
@@ -59,27 +73,25 @@ export const startupsRouter = new Elysia ({
         .update(startups)
         .set(body)
         .where(eq(startups.id, params.id))
-    }, {
+    await redis.del("startups");
+}, {
         body: StartupsSchema,
         params: z.object({
             id: z.string(),
         }),
-        isSignedIn: true,
-        isAdmin: true,
     }
 )
 
 .delete("/:id", async ({params}) => {
-    await db   
+    await db
         .update(startups)
         .set({
             isDeleted: true,
         })
         .where(eq(startups.id, params.id));
+    await redis.del("startups");
 }, {
     params: z.object({
-        id: z.string(), 
+        id: z.string(),
     }),
-    isSignedIn: true,
-    isAdmin: true,
 });

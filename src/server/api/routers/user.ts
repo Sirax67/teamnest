@@ -36,7 +36,7 @@ export const UserService = new Elysia ({name: "user/service"})
                         return status(401, "Авторизуйтесь")
                     }
                     if (session.user.role !== "ADMIN") {
-                        return status(403, "Нет прав админа")
+                        return status(403, "Нет прав администратора")
                     }
                 }
             }

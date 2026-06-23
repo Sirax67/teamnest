@@ -5,19 +5,37 @@ import { startupsSectors } from "../../db/schema";
 import z from "zod";
 import { SectorSchema } from "@/src/app/lib/schemas/sectors";
 import { UserService } from "./user";
+import { redis } from "../../redis";
 
 export const sectorsRouter = new Elysia({
     prefix: "/sectors"
 })
 .use(UserService)
 .get("/", async () => {
-    return await db.query.startupsSectors.findMany({
+
+    const query = db.query.startupsSectors.findMany({
         where: eq(startupsSectors.isDeleted, false),
     });
-}, {
-    isSignedIn: true,
-    isAdmin: true,
     
+    type Sec = Awaited<ReturnType<typeof query.execute>>
+
+    const cachedSectors = await redis.get("sectors");
+
+    if(cachedSectors) {
+        return {
+            sectors: JSON.parse(cachedSectors) as Sec,
+        }
+    }
+    
+    const sectorsFromDb = await query.execute();
+
+    await redis.set(
+        "sectors", 
+        JSON.stringify(sectorsFromDb),
+        "EX",
+        60 * 60 * 24,
+    );
+    return sectorsFromDb
 })
 .get(
     "/:id",
@@ -32,22 +50,18 @@ export const sectorsRouter = new Elysia({
     {
         params: z.object({
             id: z.string(),
-            
         }),
-        isSignedIn: true,
-        isAdmin: true,
     },
 )
-
 
 .post("/", async ({body}) => {
     await db.insert(startupsSectors).values({
         name: body.name,
     });
+
+    await redis.del("sectors"); 
 }, {
     body: SectorSchema,
-    isSignedIn: true,
-    isAdmin: true,
 })
 
 .put("/:id", async ({body, params}) => {
@@ -55,28 +69,27 @@ export const sectorsRouter = new Elysia({
         .update(startupsSectors)
         .set(body)
         .where(eq(startupsSectors.id, params.id))
+
+    await redis.del("sectors")
 },{
     body: SectorSchema,
     params: z.object({
         id: z.string(),
     }),
-    isSignedIn: true,
-    isAdmin: true,
 }
 )
 
 .delete("/:id", async ({params}) => {
-    await db   
-            .update(startupsSectors)
-            .set({
-                isDeleted: true,
-            })
-            .where(eq(startupsSectors.id, params.id));
+    await db
+        .update(startupsSectors)
+        .set({
+            isDeleted: true,
+        })
+        .where(eq(startupsSectors.id, params.id));
+    
+    await redis.del("sectors")
 }, {
     params: z.object({
-        id: z.string(), 
+        id: z.string(),
     }),
-    isSignedIn: true,
-    isAdmin: true,
-    
 });

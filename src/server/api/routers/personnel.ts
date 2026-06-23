@@ -5,20 +5,37 @@ import { db } from "../../db";
 import z, { string } from "zod";
 import { PersonnelSchema } from "@/src/app/lib/schemas/personnel";
 import { UserService } from "./user";
+import { redis } from "../../redis";
 
 export const personnelRouter = new Elysia ({
     prefix: "/personnel",
 })
 .use(UserService)
 .get ("/", async () => {
-    const foundPersonnel = await db.query.personnel.findMany({
-        where: eq(personnel.isDeleted, false)
-    })
-    return foundPersonnel;
-}, {
-    isSignedIn: true,
-    isAdmin: true,
-    
+
+    const query = db.query.personnel.findMany({
+        where: eq(personnel.isDeleted, false),
+    });
+
+    type Per = Awaited<ReturnType<typeof query.execute>>
+
+    const cachedPersonnel = await redis.get("personnel");
+
+    if(cachedPersonnel) {
+        return {
+            personnel: JSON.parse(cachedPersonnel) as Per,
+        }
+    }
+
+    const personnelFromDb = await query.execute();
+
+    await redis.set(
+        "personnel", 
+        JSON.stringify(personnelFromDb),
+        "EX",
+        60 * 60 * 24,
+    );
+    return personnelFromDb
 })
 .get("/:id", async ({params}) => {
     const foundedPersonnel = await db.query.personnel.findFirst({
@@ -26,14 +43,12 @@ export const personnelRouter = new Elysia ({
             eq(personnel.id, params.id),
             eq(personnel.isDeleted, false)
             )
-    }) 
+    })
     return foundedPersonnel ?? null
 }, {
     params: z.object({
         id: string(),
     }),
-    isSignedIn: true,
-    isAdmin: true,
 })
 
 .post("/", async ({body}) => {
@@ -52,10 +67,9 @@ export const personnelRouter = new Elysia ({
         categoryId: body.categoryId,
         specialtiesId: body.specialtiesId,
     });
+    await redis.del("personnel"); 
     },{
         body: PersonnelSchema,
-        isSignedIn: true,
-        isAdmin: true,
     }
 )
 
@@ -64,27 +78,25 @@ export const personnelRouter = new Elysia ({
         .update(personnel)
         .set(body)
         .where(eq(personnel.id, params.id))
-    }, {
+    await redis.del("personnel"); 
+}, {
         body: PersonnelSchema,
         params: z.object({
             id: z.string(),
         }),
-        isSignedIn: true,
-        isAdmin: true,
     }
 )
 
 .delete("/:id", async ({params}) => {
-    await db   
+    await db
         .update(personnel)
         .set({
             isDeleted: true,
         })
         .where(eq(personnel.id, params.id));
+    await redis.del("personnel"); 
 }, {
     params: z.object({
-        id: z.string(), 
+        id: z.string(),
     }),
-    isSignedIn: true,
-    isAdmin: true,
 });
