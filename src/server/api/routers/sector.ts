@@ -22,9 +22,7 @@ export const sectorsRouter = new Elysia({
     const cachedSectors = await redis.get("sectors");
 
     if(cachedSectors) {
-        return {
-            sectors: JSON.parse(cachedSectors) as Sec,
-        }
+        return JSON.parse(cachedSectors) as Sec;
     }
     
     const sectorsFromDb = await query.execute();

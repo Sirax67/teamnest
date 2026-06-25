@@ -2,6 +2,9 @@ import { eq } from "drizzle-orm";
 import { db } from "./src/server/db";
 import { personnel, personnelCategories, personnelSpecialties, startups, startupsSectors} from "./src/server/db/schema";
 
+// import { redis } from "./src/server/redis";
+// await redis.del("personnel");
+
 // // let foundPersonnel = await db.query.personnel.findMany();
 // let foundStartups = await db.query.startups.findMany();
 
@@ -27,8 +30,8 @@ import { personnel, personnelCategories, personnelSpecialties, startups, startup
 //     faculty: "Юридический факультет",
 //     skills: ["HTML", "CSS", "NodeJS"],
 //     contact: "Телеграм @rNEZHu",
-//     categoryId: "019e5b50-743f-7000-ae6f-8e37e2609d59",
-//     specialtiesId: "019e5b52-78dd-7000-9172-a0d5f36f0956",
+//     categoryId: "019ea1cd-9805-7000-965f-446dcd3050d4",
+//     specialtiesId: "019e7da8-5aeb-7000-acf1-fbcd0ef7b05a",
 //     period: "2005 - 2020",
 // });
 

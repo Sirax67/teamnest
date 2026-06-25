@@ -22,9 +22,7 @@ export const personnelRouter = new Elysia ({
     const cachedPersonnel = await redis.get("personnel");
 
     if(cachedPersonnel) {
-        return {
-            personnel: JSON.parse(cachedPersonnel) as Per,
-        }
+        return JSON.parse(cachedPersonnel) as Per;
     }
 
     const personnelFromDb = await query.execute();

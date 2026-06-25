@@ -22,9 +22,7 @@ export const specialtiesRouter = new Elysia({
     const cachedSpecialties = await redis.get("specialties");
 
     if(cachedSpecialties) {
-        return {
-            specialties: JSON.parse(cachedSpecialties) as Spec,
-        }
+        return JSON.parse(cachedSpecialties) as Spec;
     }
     
     const specialtiesFromDb = await query.execute();

@@ -19,6 +19,11 @@ export function StartupList () {
                         {start.name}
                     </h2>
                     <div className="space-y-2 text-gray-700">
+                          <img
+                                src={start.logo ? `/api/files/${start.logo}` : "/images/default-startup.png"}
+                                alt={start.name}
+                                className="w-32 h-32 object-cover rounded-lg mb-3"
+                            />
                         <p>
                             <span className="font-semibold">Описание:</span> {start.description}
                         </p>

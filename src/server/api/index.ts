@@ -6,6 +6,7 @@ import { sectorsRouter } from "./routers/sector";
 import { specialtiesRouter } from "./routers/specialties";
 import { treaty } from "@elysiajs/eden";
 import { auth } from "../auth/auth";
+import { filesRouter } from "./routers/files";
 
 export const app = new Elysia({
     prefix: "/api"
@@ -22,6 +23,7 @@ export const app = new Elysia({
 .use(specialtiesRouter)
 .use(startupsRouter)
 .use(sectorsRouter)
+.use(filesRouter)
 
 
 export const api  = treaty(app).api

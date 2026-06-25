@@ -1,16 +1,11 @@
+
 import { relations } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
+import {commonFields} from "./untils"
 export * from "./auth-schema";
+export * from "./file";
 
-export const commonFields = {
-    id: pg
-        .varchar("id", { length: 255 })
-        .notNull()
-        .primaryKey()
-        .$defaultFn(() => Bun.randomUUIDv7()),
-    isDeleted: pg.boolean("is_deleted").notNull().default(false),
-    createdAt: pg.timestamp("created_at").notNull().defaultNow(),
-}
+
 
 export const personnel = pg.pgTable("personnel", {
     ...commonFields,
@@ -90,6 +85,7 @@ export const stageEnum = pg.pgEnum("stage_enum", [
 
 export const startups = pg.pgTable("startups", {
     ...commonFields,
+    logo: pg.varchar("logo", { length: 500 }),
     name: pg.varchar("name", { length: 255 }).notNull(),
     description: pg.text("description").notNull(),
     link: pg.varchar("link").notNull(),

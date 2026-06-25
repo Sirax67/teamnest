@@ -21,9 +21,7 @@ export const startupsRouter = new Elysia ({
     const cachedStartups = await redis.get("startups");
 
     if(cachedStartups) {
-        return {
-            startups: JSON.parse(cachedStartups) as Star,
-        }
+        return JSON.parse(cachedStartups) as Star;
     }
 
     const startupsFromDb = await query.execute();
@@ -55,6 +53,7 @@ export const startupsRouter = new Elysia ({
 
 .post("/", async ({body}) => {
    await db.insert(startups).values({
+        logo: body.logo,
         name: body.name,
         description: body.description,
         link: body.link,

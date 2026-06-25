@@ -6,10 +6,13 @@ import { api } from "@/src/app/lib/client/api"
 import z from "zod/v4"
 import { useForm } from "@tanstack/react-form"
 import { queryClient } from "../../lib/client/query-client"
+import { useState } from "react"
 
 
 
 export function StartupForm () {
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+
     const createStartupMutatiom = useMutation({
             mutationKey: ["create-startups"],
             mutationFn: async (data: z.infer<typeof StartupsSchema>) => {
@@ -18,7 +21,7 @@ export function StartupForm () {
             onSuccess: () => {
                 alert("Стартап создан");
                 queryClient.invalidateQueries({
-                    queryKey: ["startups"],  
+                    queryKey: ["startups"],
                 });
             },
             onError: (e) => {
@@ -28,8 +31,15 @@ export function StartupForm () {
 
     const startupForm = useForm({
         defaultValues: { } as z.infer<typeof StartupsSchema>,
-        onSubmit: ({ value }) => {
-            createStartupMutatiom.mutate(value);
+        onSubmit: async ({ value }) => {
+            let logo = value.logo;
+
+            if (logoFile) {
+                const uploaded = await api.files.post({ file: logoFile });
+                logo = uploaded.data as string;
+            }
+
+            createStartupMutatiom.mutate({ ...value, logo });
         },
         validators: {
             onSubmit: StartupsSchema,
@@ -54,6 +64,15 @@ export function StartupForm () {
                 startupForm.handleSubmit(e);
             }}
         >
+            <div className="flex flex-col gap-2">
+                <input
+                    type="file"
+                    accept="image/*"
+                    className="bg-gray-100 border border-gray-300 rounded-xl py-2 px-4 outline-gray-300 text-center"
+                    onChange={(e) => setLogoFile(e.target.files?.[0] ?? null)}
+                />
+            </div>
+
             <startupForm.Field name="name">
                 {(field) => (
                     <div className="flex flex-col gap-2">
@@ -163,7 +182,7 @@ export function StartupForm () {
                             type="date"
                             className="bg-gray-100 border border-gray-300 rounded-xl py-2 px-4 outline-gray-300 text-center"
                             value={field.state.value}
-                            placeholder="Введите дату начала стартапа"
+                            placeholder="Введите дату старта стартапа"
                             onChange={(e) => field.handleChange(e.target.value)}
                         />
                         {field.state.meta.errors.map((er) => (

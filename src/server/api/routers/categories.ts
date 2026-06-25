@@ -22,9 +22,7 @@ export const categoriesRouter = new Elysia({
     const cachedCategories = await redis.get("categories");
 
     if(cachedCategories) {
-        return {
-            categories: JSON.parse(cachedCategories) as C,
-        }
+        return JSON.parse(cachedCategories) as C;
     }
 
     const categoriesFromDb = await query.execute();
