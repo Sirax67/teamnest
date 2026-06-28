@@ -14,6 +14,9 @@ export const startupsRouter = new Elysia ({
 .get("/", async () => {
     const query = db.query.startups.findMany({
         where: eq(startups.isDeleted, false),
+        with: {
+            sector: true,
+        },
     });
 
     type Star = Awaited<ReturnType<typeof query.execute>>

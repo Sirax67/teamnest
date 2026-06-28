@@ -3,7 +3,7 @@ import { db } from "../../db";
 import { and, eq } from "drizzle-orm";
 import { personnelSpecialties} from "../../db/schema";
 import z from "zod";
-import { SpetialtiesSchema } from "@/src/app/lib/schemas/spetialties";
+import { SpecialtiesSchema } from "@/src/app/lib/schemas/specialties";
 import { UserService } from "./user";
 import { redis } from "../../redis";
 
@@ -15,6 +15,7 @@ export const specialtiesRouter = new Elysia({
 
     const query = db.query.personnelSpecialties.findMany({
         where: eq(personnelSpecialties.isDeleted, false),
+        with: { category: true },
     });
     
     type Spec = Awaited<ReturnType<typeof query.execute>>
@@ -60,7 +61,7 @@ export const specialtiesRouter = new Elysia({
 
     await redis.del("specialties"); 
 }, {
-    body: SpetialtiesSchema,
+    body: SpecialtiesSchema,
 })
 
 .put("/:id", async ({body, params}) => {
@@ -71,7 +72,7 @@ export const specialtiesRouter = new Elysia({
 
     await redis.del("specialties"); 
 },{
-    body: SpetialtiesSchema,
+    body: SpecialtiesSchema,
     params: z.object({
         id: z.string(),
     }),

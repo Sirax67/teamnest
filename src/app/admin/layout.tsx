@@ -1,6 +1,7 @@
 import { auth } from "@/src/server/auth/auth";
 import {headers as nextHeaders} from "next/headers"
 import { redirect } from "next/navigation";
+import { Sidebar } from "./sidebar";
 
 export default async function AdminLayout ({
     children,
@@ -14,5 +15,8 @@ export default async function AdminLayout ({
     if (session?.user.role !== "ADMIN") {
         redirect("/")
     }
-    return  <div>{children}</div>
+    return  <div className="">
+        <Sidebar/>
+        {children}
+    </div>
 }

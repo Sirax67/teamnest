@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import {AboutCard} from "../components/aboutCard";
+import { AboutCard } from "@/src/components/about/aboutCard";
 import { api } from "@/src/server/api";
-import { auth } from "../server/auth/auth";
-import {headers as nextHeaders} from "next/headers"
+import { auth } from "@/src/server/auth/auth";
+import { headers as nextHeaders } from "next/headers"
 
 export default async function Home() {
   const session = await auth.api.getSession({
@@ -12,7 +12,6 @@ export default async function Home() {
   console.log(session)
   return (
     <div>
-        
         <Welcome/>
         <About/>
     </div>
@@ -40,12 +39,12 @@ export default async function Home() {
             </h1>
             <p className="lg:text-xl text-gray-500 max-w-[60ch] mx-auto">
               Мы объединяем
-              <span className="font-semibold"> амбициозных </span> 
-              и 
-              <span className="font-semibold"> молодых </span>  
-              специалистов, чтобы запускать 
+              <span className="font-semibold"> амбициозных </span>
+              и
+              <span className="font-semibold"> молодых </span>
+              специалистов, чтобы запускать
               <span className="font-semibold"> сильные команды </span>
-              и воплощать 
+              и воплощать
               <span className="font-semibold"> смелые идеи </span> в жизнь.
             </p>
           </div>
@@ -55,7 +54,7 @@ export default async function Home() {
           Зарегистрироваться
         </Link>
       </div>
-      
+
     </section>
   )
 }
@@ -64,18 +63,12 @@ async function  About () {
   const personnel = (await api.personnel.get()).data;
   return(
     <section className="py-12 px-16 text-center flex flex-col gap-12 items-center container mx-auto">
-      <div className="flex flex-col text-red-500 border border-red-500 p-6">
-        {personnel?.map((personnel)  => (
-          <p key={personnel.id}>
-            {personnel.name}
-          </p>
-        ))}
-      </div>
+     
       <div className="flex flex-col gap-4 items-center">
-        
+
         <h2 className="
-          font-semibold 
-          text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl 
+          font-semibold
+          text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl
           bg-clip-text text-transparent bg-gradient-to-br from-[#5D5D5D] via-[#1C1C1C] to-[#5D5D5D]
           max-w-[30ch]
         ">
@@ -83,13 +76,13 @@ async function  About () {
         </h2>
         <p className="lg:text-xl text-gray-500 max-w-[60ch]">Мы помогаем находить команду, запускать стартапы и делать первые шаги к настоящим изменениям.</p>
       </div>
-      
+
       <div className="">
         <AboutCard/>
       </div>
-     
-      <p className="lg:text-2xl max-w-[75ch]">Наша миссия — дать каждому шанс воплотить идею в жизнь и получить поддержку на каждом этапе пути. Присоединяйтесь и начинайте строить будущее вместе с нами!</p>
-      
+
+      <p className="lg:text-2xl max-w-[75ch]">Наша миссия — дать каждому шанс воплотить идею в жизнь и получить поддержку на каждом этапе пути. Присоединяйтесь и начинайте строить будущее вместе с нами!</p>
+
     </section>
   )
 }

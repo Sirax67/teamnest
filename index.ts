@@ -3,7 +3,8 @@ import { db } from "./src/server/db";
 import { personnel, personnelCategories, personnelSpecialties, startups, startupsSectors} from "./src/server/db/schema";
 
 // import { redis } from "./src/server/redis";
-// await redis.del("personnel");
+// await redis.del("specialties");
+// console.log("done");
 
 // // let foundPersonnel = await db.query.personnel.findMany();
 // let foundStartups = await db.query.startups.findMany();

@@ -1,23 +1,22 @@
-import { api } from "@/src/server/api"
-import { StartupForm } from "./startup-form";
-import { StartupList } from "./startups-list";
+import { api } from "@/src/server/api";
+import { StartupsTable } from "./startups-table";
+import { CreateUpdateStartup } from "./create-update";
 
+export default async function AdminStartupsPage () {
+    const startups = (await api.startups.get()).data;
 
-export default async function StarupPage () {
-const startups = (await api.startups.get()).data;
-
-    return (
-        <div className="container mx-auto flex flex-col gap-12 py-12 px-16 mt-20">
-            <h1 className="
-                font-semibold text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-br from-[#5D5D5D] via-[#1C1C1C] to-[#5D5D5D] max-w-[35ch]
-            ">
-                Стартапы
-            </h1>
-
-            <div className="flex flex-col gap-4">
-                <StartupList/>
+    return(
+        <div className="pt-18 mr-16 ml-60 flex flex-col gap-12 ">
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-3xl font-semibold">Стартапы</h1>
+                    <p className="text-gray-500">Управление стартапами</p>
+                </div>
+                <CreateUpdateStartup />
             </div>
-            <StartupForm/>
+            
+            
+            <StartupsTable initialData={startups ?? []}/>
         </div>
     )
 }

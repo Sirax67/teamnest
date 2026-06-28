@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Unbounded } from "next/font/google";
 import "./globals.css";
-import { Inter } from "next/font/google";
-import Header from "../components/ui/header";
-import { Questions } from "../components/ui/questions";
-import { Footer } from "../components/ui/footer";
 import { QueryClientProvider } from "./query-client-provider";
+import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
   weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
+});
+
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin", "cyrillic"],
+  weight: ["400", "500", "600", "700"],
 });
 
 const geistSans = Geist({
@@ -36,19 +41,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", inter.variable, unbounded.variable)}
     >
       
       <body className="min-h-full flex flex-col">
-        <Header/>
-        <main className="">
-          <QueryClientProvider>
-            {children}
-          </QueryClientProvider>
-          
-        </main>
-        <Questions/>
-        <Footer/>
+        <QueryClientProvider>
+          <Toaster/>
+          {children}
+        </QueryClientProvider>
       </body>
     </html>
   );

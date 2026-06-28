@@ -1,19 +1,24 @@
 import { api } from "@/src/server/api";
-import { CategoryForm } from "./category-form";
-import { CategoryList } from "./category-list";
-
-export default async function CategoriesPage () {
+import { CategoriesTable } from "./categories-table";
+import { CreateUpdateCategory } from "./create-update";
+export default async function AdminCategoriesPage () {
     const categories = (await api.categories.get()).data;
+
     return(
-        <div className="container mx-auto flex flex-col gap-12 py-12 px-16 mt-20">
-            <h1 className="
-                font-semibold text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-br from-[#5D5D5D] via-[#1C1C1C] to-[#5D5D5D] max-w-[35ch]
-            ">
-                Категории
-            </h1>
-            <CategoryList/>
-            <CategoryForm />
+        <div className="pt-18 mr-16 ml-60 flex flex-col gap-12 ">
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-3xl font-semibold">Категории</h1>
+                    <p className="text-gray-500">Управление категориями</p>
+                </div>
+                <CreateUpdateCategory />
+            </div>
             
+            
+            <CategoriesTable initialData={categories ?? []}/>
         </div>
+        
+        
+        
     )
 }

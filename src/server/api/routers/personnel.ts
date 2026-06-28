@@ -49,8 +49,25 @@ export const personnelRouter = new Elysia ({
     }),
 })
 
-.post("/", async ({body}) => {
+.get("/me", async ({ session, status }) => {
+    if (!session?.user) return status(401, "Авторизуйтесь")
+
+    const found = await db.query.personnel.findFirst({
+        where: and(
+            eq(personnel.userId, session.user.id),
+            eq(personnel.isDeleted, false)
+        )
+    })
+    return found ?? null
+}, {
+    isSignedIn: true,
+})
+
+.post("/", async ({ body, session, status }) => {
+    if (!session?.user) return status(401, "Авторизуйтесь")
+
     await db.insert(personnel).values({
+        userId: session.user.id,
         avatar: body.avatar,
         name: body.name,
         position: body.position,
@@ -58,18 +75,18 @@ export const personnelRouter = new Elysia ({
         age: body.age,
         summary: body.summary,
         institution: body.institution,
-        faculty:  body.faculty,
+        faculty: body.faculty,
         period: body.period,
         skills: body.skills,
         contact: body.contact,
         categoryId: body.categoryId,
         specialtiesId: body.specialtiesId,
     });
-    await redis.del("personnel"); 
-    },{
-        body: PersonnelSchema,
-    }
-)
+    await redis.del("personnel");
+}, {
+    body: PersonnelSchema,
+    isSignedIn: true,
+})
 
 .put("/:id", async ({body, params}) => {
     await db

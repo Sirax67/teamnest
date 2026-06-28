@@ -2,6 +2,7 @@
 import { relations } from "drizzle-orm";
 import * as pg from "drizzle-orm/pg-core";
 import {commonFields} from "./untils"
+import { user } from "./auth-schema";
 export * from "./auth-schema";
 export * from "./file";
 
@@ -9,6 +10,10 @@ export * from "./file";
 
 export const personnel = pg.pgTable("personnel", {
     ...commonFields,
+    userId: pg.text("user_id")
+        .notNull()
+        .unique()
+        .references(() => user.id, { onDelete: "cascade" }),
     avatar: pg.varchar("avatar", { length: 500 }).default("/images/default-avatar.png"),
     name: pg.varchar("name", { length: 255 }).notNull(),
     position: pg.varchar("position", { length: 255 }).notNull(),
@@ -47,6 +52,20 @@ export const personnelSpecialties = pg.pgTable("personnel_specialties", {
 
 
 
+
+export const userPersonnelRelations = relations(user, ({ one }) => ({
+    personnel: one(personnel, {
+        fields: [user.id],
+        references: [personnel.userId],
+    }),
+}));
+
+export const personnelUserRelations = relations(personnel, ({ one }) => ({
+    user: one(user, {
+        fields: [personnel.userId],
+        references: [user.id],
+    }),
+}));
 
 export const personnelCategoriesRelations = relations(personnel, ({ one }) => ({
     category: one(personnelCategories, {
