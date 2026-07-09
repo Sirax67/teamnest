@@ -1,7 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
-import { redirect, useRouter } from "next/navigation";
+import {useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { authClient } from "../../lib/client/auth-client";
 

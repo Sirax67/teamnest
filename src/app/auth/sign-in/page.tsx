@@ -8,7 +8,6 @@ import { MoveLeft } from "lucide-react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 
 export default function SignIn () {
@@ -18,8 +17,6 @@ export default function SignIn () {
         password: z.string(),
     })
 
-    const router = useRouter()
-
     const signInMutation = useMutation({
         mutationKey: ["sign-in"],
         
@@ -28,7 +25,7 @@ export default function SignIn () {
         },
         onSuccess: () => {
             toast.success("Успешный вход")
-            router.push("/")
+            window.location.href = "/"
         },
         onError: (error) => {
             toast.error(error.message)
@@ -36,7 +33,7 @@ export default function SignIn () {
     });
 
     const form = useForm ({
-        defaultValues: {} as z.infer<typeof schema>,
+        defaultValues: { email: "", password: "" },
         onSubmit: async ({value}) => {
             signInMutation.mutate(value)
         },
@@ -57,7 +54,7 @@ export default function SignIn () {
 
                 <div className="flex flex-col gap-2">
                     <h1 className="text-2xl font-semibold">Вход</h1>
-                    <p className="text-gray-500">Добро пожаловать!</p>
+                    <p className="text-muted-foreground">Добро пожаловать!</p>
                 </div>
 
                 
@@ -72,7 +69,7 @@ export default function SignIn () {
                         {(field) => (
                             <div className="flex flex-col gap-1">
                                 <Input
-                                    className="bg-gray-50 rounded-xl py-3 h-auto"
+                                    className="bg-card rounded-xl py-3 h-auto"
                                     type="email"
                                     value={field.state.value}
                                     placeholder="Почта"
@@ -86,7 +83,7 @@ export default function SignIn () {
                         {(field) => (
                             <div className="flex flex-col gap-1">
                                 <Input
-                                    className="bg-gray-50 rounded-xl py-3 h-auto"
+                                    className="bg-card rounded-xl py-3 h-auto"
                                     type="password"
                                     value={field.state.value}
                                     placeholder="Пароль"
@@ -99,7 +96,7 @@ export default function SignIn () {
                     <form.Subscribe>
                         {(state) => (
                             <button type="submit" className="
-                                border-white text-center text-white bg-gray-950 py-2 px-4 rounded-xl  cursor-pointer font-medium hover:bg-gray-900 w-full 
+                                border-white text-center text-white bg-primary py-2 px-4 rounded-xl  cursor-pointer font-medium hover:bg-primary/90 w-full 
                                 "
                             >
                                 Войти

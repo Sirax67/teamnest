@@ -4,6 +4,10 @@ import { personnel, personnelCategories, personnelSpecialties, startups, startup
 
 // import { redis } from "./src/server/redis";
 // await redis.del("specialties");
+// await redis.del("startups");
+// await redis.del("personnel");
+// await redis.del("sectors");
+// await redis.del("category");
 // console.log("done");
 
 // // let foundPersonnel = await db.query.personnel.findMany();

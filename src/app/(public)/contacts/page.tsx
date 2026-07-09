@@ -23,7 +23,6 @@ function Content () {
                 ></Image>
             </div>
 
-            {/* Мобильный layout — естественный поток */}
             <div className="lg:hidden flex flex-col items-center pt-20 pb-12 px-4 relative z-10 w-fit mx-auto">
                 <div className="w-full flex flex-col items-center">
                     <h1 className="text-7xl font-unbounded">Founder</h1>
@@ -33,7 +32,6 @@ function Content () {
                     </div>
                 </div>
 
-                {/* Фото сразу под надписью */}
                 <div className="w-full max-w-xs h-96 relative">
                     <Image
                         className="object-contain object-top"
@@ -42,8 +40,8 @@ function Content () {
                         fill
                     ></Image>
                 </div>
-
-                <div className="flex flex-col gap-2 items-center text-center">
+                <div className="z-30 h-80 w-full absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent"></div>
+                <div className="flex flex-col gap-2 items-center text-center z-40">
                     <p className="text-xl font-medium">Создай свое будущее вместе с</p>
                     <div className="w-40 h-10 relative">
                         <Image src="/images/Logo-dark.svg" alt="/" fill className="object-contain" />
@@ -51,7 +49,6 @@ function Content () {
                 </div>
             </div>
 
-            {/* Десктоп layout — оригинальный с h-screen и absolute фото */}
             <div className="hidden lg:block relative h-screen px-16 pb-12 pt-20">
                 <div className="relative z-10 container mx-auto flex flex-col items-center w-fit">
                     <h1 className="text-[clamp(78px,18vw,256px)] font-unbounded leading-none">Founder</h1>
@@ -60,8 +57,9 @@ function Content () {
                         <p className="text-[clamp(20px,3vw,48px)] font-medium">CEO</p>
                     </div>
                 </div>
+                
                 <div className="absolute right-0 left-0 bottom-0">
-                    <div className="w-170 h-300 relative z-20 pointer-events-none mx-auto ">
+                    <div className="w-200 lg:h-150 xl:h-200 relative z-20 pointer-events-none mx-auto ">
                         <Image
                             className="object-contain object-bottom"
                             src="/images/contacts/Oleg.png"

@@ -8,9 +8,10 @@ import { MoveLeft } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 export default function SignUp() {
-
+    const router = useRouter();
     const RegisterSchema = z.object({
         name: z.string(),
         email: z.email(),
@@ -28,6 +29,7 @@ export default function SignUp() {
             if (error) throw new Error(error.message)
         },
         onSuccess: () => {
+            router.push("/onboarding")
             toast.success("Успешная регистрация")
         },
         onError: (error) => {

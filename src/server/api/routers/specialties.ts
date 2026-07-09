@@ -28,12 +28,14 @@ export const specialtiesRouter = new Elysia({
     
     const specialtiesFromDb = await query.execute();
 
-    await redis.set(
-        "specialties", 
-        JSON.stringify(specialtiesFromDb),
-        "EX",
-        60 * 60 * 24,
-    );
+    if (specialtiesFromDb.length > 0) {
+        await redis.set(
+            "specialties",
+            JSON.stringify(specialtiesFromDb),
+            "EX",
+            60 * 60 * 24,
+        );
+    }
     return specialtiesFromDb
 })
 .get(

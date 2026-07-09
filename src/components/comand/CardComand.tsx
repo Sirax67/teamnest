@@ -43,7 +43,7 @@ export function ComandCard () {
                     </div>
                     <div className="flex flex-col">
                         <p className="text-2xl font-medium">{person.title}</p>
-                        <p className="text-gray-500">{person.post}</p>
+                        <p className="text-muted-foreground">{person.post}</p>
                     </div>
                     
                     <Link href="/contacts" className="underline">

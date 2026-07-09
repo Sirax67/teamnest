@@ -1,6 +1,5 @@
 import Elysia from "elysia";
 import { auth } from "../../auth/auth";
-import { userRoleEnum } from "../../db/auth-schema";
 
 export const UserService = new Elysia ({name: "user/service"})
     .derive({as: "global"}, async ({request}) => {

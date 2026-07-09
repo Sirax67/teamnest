@@ -30,7 +30,7 @@ export function AboutCard () {
             {about.map((feature, index) => (
                 <div
                     key={index}
-                    className="p-4 bg-gray-100 border border-gray-200 flex flex-col gap-4 rounded-2xl max-w-103"
+                    className="p-4 bg-card border border-border flex flex-col gap-4 rounded-2xl max-w-103"
                 >
                     <div className="relative h-56 md:h-64 ">
                         <Image
@@ -42,7 +42,7 @@ export function AboutCard () {
                     </div>
                     <div className="flex flex-col gap-2 text-start">
                         <p className="text-2xl font-medium">{feature.title}</p>
-                        <p className="text-gray-500">{feature.description}</p>
+                        <p className="text-muted-foreground">{feature.description}</p>
                     </div>
                 
                 </div>

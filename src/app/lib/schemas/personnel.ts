@@ -2,7 +2,7 @@ import { z } from "zod/v4"
 
 export const PersonnelSchema = z.object({
     avatar: z.string().optional(),
-    name: z.string({message: "Введите ФИО"}).min(3, {message: "ФИ слишком короткое"}).max(255, {message: "ФИ слишком длинное"}),
+    name: z.string({message: "Введите ФИО"}).min(3, {message: "ФИО слишком короткое"}).max(255, {message: "ФИ слишком длинное"}),
     position: z.string({message: "Введите должность"}),
     city: z.string({message: "Введите город"}).min(2, {message: "Название города слишком короткое"}).max(168, {message: "Название города слишком длинное"}),
     age: z.number({message: "Введите свой возраст"}).int({message: "Возраст должен быть целым числом"}).min(14, {message: "Минимальный возраст — 14 лет"}).max(100, {message: "Максимальный возраст — 100 лет"}),

@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { queryClient } from "../../lib/client/query-client";
 import { toast } from "sonner";
-import { CreateUpdateStartup } from "./create-update";
 import Link from "next/link";
 
 export function StartupsTable({ initialData }: { initialData: Startup[] }) {
@@ -88,7 +87,6 @@ const colums: ColumnDef<Startup>[] = [
       header: "Действия",
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
-          <CreateUpdateStartup startup={row.original} />
           <DeleteStartup startup={row.original} />
         </div>
       ),
@@ -110,8 +108,8 @@ function DeleteStartup({startup}: { startup: Startup }) {
     });
   return (
     <Dialog>
-      <DialogTrigger >
-        <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600">
+      <DialogTrigger asChild>
+        <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600 rounded-lg">
           <Trash2 />
         </Button>
       </DialogTrigger>
@@ -121,7 +119,7 @@ function DeleteStartup({startup}: { startup: Startup }) {
         </DialogHeader>
         <p>Вы уверены, что хотите удалить стартап <span className="font-medium">{startup.name}</span>?</p>
         <DialogFooter>
-          <DialogClose>
+          <DialogClose asChild>
             <Button variant={"outline"}>Отмена</Button>
           </DialogClose>
           <Button

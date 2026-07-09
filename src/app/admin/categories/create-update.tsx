@@ -67,11 +67,11 @@ export function CreateUpdateCategory({ category }: { category?: Category }) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger >
         {category ? (
-          <Button variant="outline" size="icon" className="cursor-pointer" >
+          <Button variant="outline" size="icon" className="cursor-pointer rounded-lg" >
             <Pencil />
           </Button>
         ) : (
-          <Button className="bg-gray-950 text-white hover:bg-gray-800 cursor-pointer px-4 py-3 h-auto rounded-xl">
+          <Button className="fixed bottom-2 right-0 left-0 mt-auto md:relative cursor-pointer">
             <Plus /> Создать категорию
           </Button>
         )}

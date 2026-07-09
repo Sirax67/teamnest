@@ -12,21 +12,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { cn } from "@/lib/utils"
-import { Camera, CircleAlert, MoveRight, Search } from "lucide-react"
+import { Camera, CircleAlert, MoveRight, Plus, X } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const STEPS = ["Данные", "Образование", "Специальность", "Навыки", "Контакты"]
 
-const SKILLS_BY_CATEGORY: Record<string, string[]> = {
-    "Бекенд": ["Node.js", "Bun", "Python", "Go", "Rust", "Java", "PHP", "C#", "PostgreSQL", "MongoDB", "Redis"],
-    "Фронтенд": ["React", "Vue", "Angular", "TypeScript", "Next.js", "Tailwind CSS", "HTML/CSS", "Vite"],
-    "Дизайн": ["Figma", "Photoshop", "Illustrator", "UI/UX", "Sketch", "After Effects"],
-    "Инженерия": ["Docker", "Kubernetes", "AWS", "Linux", "CI/CD", "Nginx", "Git"],
-    "Маркетинг": ["SEO", "SMM", "Таргет", "Контент-маркетинг", "Email-маркетинг", "Аналитика"],
-    "Менеджмент": ["Agile", "Scrum", "Kanban", "Управление командой", "Jira", "Notion"],
-    "Нейросети": ["PyTorch", "TensorFlow", "OpenAI API", "LangChain", "Computer Vision", "NLP"],
-    "Софт скиллы": ["Коммуникация", "Лидерство", "Тайм-менеджмент", "Публичные выступления", "Работа в команде"],
-}
+const currentYear = new Date().getFullYear()
+const YEARS = Array.from({ length: 30 }, (_, i) => currentYear - i)
 
 const stepSchemas = [
     z.object({
@@ -60,9 +53,9 @@ export default function OnboardingPage() {
     const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
     const [stepErrors, setStepErrors] = useState<Record<string, string>>({})
 
-    const [openCategoryId, setOpenCategoryId] = useState<string | null>(null)
-    const [specialtySearch, setSpecialtySearch] = useState("")
-    const [skillSearch, setSkillSearch] = useState("")
+    const [skillInput, setSkillInput] = useState("")
+    const [periodFrom, setPeriodFrom] = useState("")
+    const [periodTo, setPeriodTo] = useState("")
 
     const { data: categories } = useQuery({
         queryKey: ["categories"],
@@ -146,28 +139,30 @@ export default function OnboardingPage() {
     const selectedSpecialty = specialties?.find((s) => s.id === form.state.values.specialtiesId)
 
     return (
-        <div className="container m-auto w-auto flex flex-col items-center justify-center p-4 bg-gray-100 rounded-2xl border ">
+        <div className="container m-auto max-w-200 flex flex-col items-center justify-center p-4 bg-gray-100 rounded-2xl border ">
             <div className="flex flex-col gap-4 w-full">
 
                 <h1 className="text-2xl font-semibold">Создание профиля</h1>
 
-                <div className="flex items-center gap-2">
+                <div className="flex justify-center items-center w-full sm:gap-4 ">
                     {STEPS.map((s, i) => (
                         <div key={s} className="flex items-center gap-2">
                             <div className={cn(
-                                "flex items-center gap-2",
+                                "w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold",
+                                i <= step ? "bg-blue-600 text-white" : "bg-gray-200"
+                            )}>
+                                {i + 1}
+                            </div>
+
+                            <span className={cn(
+                                "text-sm font-medium hidden md:block",
                                 i > step && "opacity-60"
                             )}>
-                                <div className={cn(
-                                    "w-7 h-7 rounded-full flex items-center justify-center text-sm font-semibold",
-                                    i <= step ? "bg-blue-600 text-white" : "bg-gray-200"
-                                )}>
-                                    {i + 1}
-                                </div>
-                                <span className="text-sm font-medium hidden sm:block">{s}</span>
-                            </div>
+                                {s}
+                            </span>
+
                             {i < STEPS.length - 1 && (
-                                <MoveRight className="text-gray-300 size-5"/>
+                                <MoveRight className="text-gray-300 size-5 " />
                             )}
                         </div>
                     ))}
@@ -251,8 +246,8 @@ export default function OnboardingPage() {
                                         />
                                     )}
                                 </form.Field>
-                                
-                                <div>
+
+                                <div className="flex flex-col gap-2">
                                     <form.Field name="summary">
                                         {(field) => (
                                             <Textarea
@@ -264,11 +259,11 @@ export default function OnboardingPage() {
                                         )}
                                     </form.Field>
                                     <p className="flex text-sm items-center text-black/70 gap-1">
-                                        <CircleAlert className="size-4"/> 
-                                        Опишите ваш опыт, сильнын стороны и что ищете.
+                                        <CircleAlert className="size-4"/>
+                                        Опишите ваш опыт, сильные стороны и что ищете.
                                     </p>
                                 </div>
-                                
+
                             </div>
                         )}
 
@@ -285,16 +280,48 @@ export default function OnboardingPage() {
                                         />
                                     )}
                                 </form.Field>
-                                
+
                                 <form.Field name="period">
                                     {(field) => (
-                                        <Input
-                                            className="bg-gray-50 rounded-lg p-3 h-auto"
-                                            placeholder="Период (2022-2026)"
-                                            value={field.state.value}
-                                            onChange={(e) => field.handleChange(e.target.value)}
-                                            errors={stepErrors.period ? [stepErrors.period] : []}
-                                        />
+                                        <div className="flex flex-col gap-1">
+                                            <p className="text-sm text-gray-500">Период обучения</p>
+                                            <div className="flex items-center gap-2">
+                                                <Select
+                                                    value={periodFrom}
+                                                    onValueChange={(val) => {
+                                                        setPeriodFrom(val)
+                                                        field.handleChange(val && periodTo ? `${val}–${periodTo}` : "")
+                                                    }}
+                                                >
+                                                    <SelectTrigger className="bg-gray-50 h-auto py-3">
+                                                        <SelectValue placeholder="С года" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {YEARS.map((y) => (
+                                                            <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                <span className="text-gray-400">—</span>
+                                                <Select
+                                                    value={periodTo}
+                                                    onValueChange={(val) => {
+                                                        setPeriodTo(val)
+                                                        field.handleChange(periodFrom && val ? `${periodFrom}–${val}` : "")
+                                                    }}
+                                                >
+                                                    <SelectTrigger className="bg-gray-50 h-auto py-3">
+                                                        <SelectValue placeholder="По год" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {YEARS.map((y) => (
+                                                            <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            {stepErrors.period && <p className="text-destructive text-sm">{stepErrors.period}</p>}
+                                        </div>
                                     )}
                                 </form.Field>
 
@@ -321,8 +348,6 @@ export default function OnboardingPage() {
                                         />
                                     )}
                                 </form.Field>
-
-                                
                             </div>
                         )}
 
@@ -391,69 +416,62 @@ export default function OnboardingPage() {
                                 <form.Field name="skills">
                                     {(field) => (
                                         <div className="flex flex-col gap-3">
-                                            <p className="text-sm text-gray-500">
-                                                Выбрано:{" "}
-                                                <span className="font-medium text-gray-900">
-                                                    {field.state.value.length > 0 ? field.state.value.join(", ") : "ничего не выбрано"}
-                                                </span>
-                                            </p>
-                                            <div className="relative">
-                                                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                            <div className="flex gap-2">
                                                 <input
-                                                    placeholder="Название навыка"
-                                                    value={skillSearch}
-                                                    onChange={(e) => setSkillSearch(e.target.value)}
-                                                    className="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-transparent text-sm outline-none"
+                                                    placeholder="Введите навык"
+                                                    value={skillInput}
+                                                    onChange={(e) => setSkillInput(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === "Enter") {
+                                                            e.preventDefault()
+                                                            const trimmed = skillInput.trim()
+                                                            if (trimmed && !field.state.value.includes(trimmed)) {
+                                                                field.handleChange([...field.state.value, trimmed])
+                                                            }
+                                                            setSkillInput("")
+                                                        }
+                                                    }}
+                                                    className="flex-1 h-10 px-3 rounded-lg border border-input bg-gray-50 text-sm outline-none focus:border-gray-400"
                                                 />
+                                                <button
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const trimmed = skillInput.trim()
+                                                        if (trimmed && !field.state.value.includes(trimmed)) {
+                                                            field.handleChange([...field.state.value, trimmed])
+                                                        }
+                                                        setSkillInput("")
+                                                    }}
+                                                    className="flex items-center gap-1 px-4 py-2 rounded-lg bg-gray-950 text-white text-sm hover:bg-gray-800 transition cursor-pointer"
+                                                >
+                                                    <Plus className="size-4" />
+                                                    Добавить
+                                                </button>
                                             </div>
 
-                                            <Accordion type="single" collapsible className="flex flex-col gap-2">
-                                                {Object.entries(SKILLS_BY_CATEGORY).map(([category, skills]) => {
-                                                    const filtered = skills.filter((s) =>
-                                                        s.toLowerCase().includes(skillSearch.toLowerCase())
-                                                    )
-                                                    if (filtered.length === 0) return null
-                                                    return (
-                                                        <AccordionItem
-                                                            key={category}
-                                                            value={category}
-                                                            className="border border-gray-200 rounded-xl px-4"
+                                            {field.state.value.length > 0 && (
+                                                <div className="flex flex-wrap gap-2">
+                                                    {field.state.value.map((skill) => (
+                                                        <span
+                                                            key={skill}
+                                                            className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm bg-gray-100 border border-gray-200"
                                                         >
-                                                            <AccordionTrigger className="font-medium text-sm">
-                                                                {category}
-                                                            </AccordionTrigger>
-                                                            <AccordionContent>
-                                                                <div className="flex flex-wrap gap-2 pb-2">
-                                                                    {filtered.map((skill) => {
-                                                                        const selected = field.state.value.includes(skill)
-                                                                        return (
-                                                                            <button
-                                                                                key={skill}
-                                                                                type="button"
-                                                                                onClick={() => {
-                                                                                    if (selected) {
-                                                                                        field.handleChange(field.state.value.filter((s) => s !== skill))
-                                                                                    } else {
-                                                                                        field.handleChange([...field.state.value, skill])
-                                                                                    }
-                                                                                }}
-                                                                                className={cn(
-                                                                                    "px-3 py-1.5 rounded-xl text-sm border transition-colors",
-                                                                                    selected
-                                                                                        ? "bg-blue-100 text-blue-600 border-blue-600"
-                                                                                        : "bg-white border-gray-200 hover:bg-gray-50"
-                                                                                )}
-                                                                            >
-                                                                                {skill}
-                                                                            </button>
-                                                                        )
-                                                                    })}
-                                                                </div>
-                                                            </AccordionContent>
-                                                        </AccordionItem>
-                                                    )
-                                                })}
-                                            </Accordion>
+                                                            {skill}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => field.handleChange(field.state.value.filter((s) => s !== skill))}
+                                                                className="cursor-pointer text-gray-400 hover:text-gray-700 transition"
+                                                            >
+                                                                <X className="size-3.5" />
+                                                            </button>
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {field.state.value.length === 0 && (
+                                                <p className="text-sm text-gray-400">Навыки не добавлены</p>
+                                            )}
 
                                             {stepErrors.skills && <p className="text-destructive text-sm">{stepErrors.skills}</p>}
                                         </div>

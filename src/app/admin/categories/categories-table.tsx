@@ -71,7 +71,7 @@ function DeleteCategory({category}: { category: Category }) {
   return (
     <Dialog>
       <DialogTrigger >
-        <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600">
+        <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600 rounded-lg">
           <Trash2 />
         </Button>
       </DialogTrigger>

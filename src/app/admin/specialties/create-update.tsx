@@ -64,12 +64,12 @@ export function CreateUpdateSpecialty({ specialty }: { specialty?: Specialty }) 
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 {specialty ? (
-                    <Button variant="outline" size="icon" className="cursor-pointer">
+                    <Button variant="outline" size="icon" className="cursor-pointer rounded-lg">
                         <Pencil />
                     </Button>
                 ) : (
-                    <Button className="bg-gray-950 text-white hover:bg-gray-800 cursor-pointer px-4 py-3 h-auto rounded-xl">
-                        <Plus /> Создать специальность
+                    <Button className="fixed bottom-2 right-0 left-0 mt-auto md:relative cursor-pointer">
+                        <Plus/> Создать специальность
                     </Button>
                 )}
             </DialogTrigger>
@@ -105,7 +105,7 @@ export function CreateUpdateSpecialty({ specialty }: { specialty?: Specialty }) 
                                 <select
                                     value={field.state.value}
                                     onChange={(e) => field.handleChange(e.target.value)}
-                                    className="border border-gray-200 rounded-xl py-2 px-4 text-sm outline-none"
+                                    className="border border-border rounded-xl py-2 px-4 text-sm outline-none"
                                 >
                                     <option value="">Выберите категорию</option>
                                     {categories?.map((c) => (

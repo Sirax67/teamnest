@@ -1,6 +1,6 @@
 import Elysia from "elysia";
-import { and, eq } from "drizzle-orm";
-import { personnel } from "../../db/schema";
+import { and, eq, ilike, inArray, or } from "drizzle-orm";
+import { personnel, personnelSpecialties } from "../../db/schema";
 import { db } from "../../db";
 import z, { string } from "zod";
 import { PersonnelSchema } from "@/src/app/lib/schemas/personnel";
@@ -15,6 +15,10 @@ export const personnelRouter = new Elysia ({
 
     const query = db.query.personnel.findMany({
         where: eq(personnel.isDeleted, false),
+        with: {
+            category: true,
+            specialty: true,
+        }
     });
 
     type Per = Awaited<ReturnType<typeof query.execute>>
@@ -27,20 +31,52 @@ export const personnelRouter = new Elysia ({
 
     const personnelFromDb = await query.execute();
 
-    await redis.set(
-        "personnel", 
-        JSON.stringify(personnelFromDb),
-        "EX",
-        60 * 60 * 24,
-    );
+    if (personnelFromDb.length > 0) {
+        await redis.set(
+            "personnel",
+            JSON.stringify(personnelFromDb),
+            "EX",
+            60 * 60 * 24,
+        );
+    }
     return personnelFromDb
 })
+.get("/search", async ({ query }) => {
+    const q = query.q?.trim()
+    if (!q || q.length < 2) return []
+
+    const matchingSpecialties = await db
+        .select({ id: personnelSpecialties.id })
+        .from(personnelSpecialties)
+        .where(ilike(personnelSpecialties.name, `%${q}%`))
+
+    const specialtyIds = matchingSpecialties.map(s => s.id)
+
+    return await db.query.personnel.findMany({
+        where: and(
+            eq(personnel.isDeleted, false),
+            or(
+                ilike(personnel.name, `%${q}%`),
+                specialtyIds.length > 0 ? inArray(personnel.specialtiesId, specialtyIds) : undefined,
+            )
+        ),
+        with: { specialty: true },
+        limit: 10,
+    })
+}, {
+    query: z.object({ q: z.string().optional() }),
+})
+
 .get("/:id", async ({params}) => {
     const foundedPersonnel = await db.query.personnel.findFirst({
         where: and(
             eq(personnel.id, params.id),
             eq(personnel.isDeleted, false)
-            )
+        ),
+        with: {
+            category: true,
+            specialty: true,
+        }
     })
     return foundedPersonnel ?? null
 }, {
@@ -56,7 +92,11 @@ export const personnelRouter = new Elysia ({
         where: and(
             eq(personnel.userId, session.user.id),
             eq(personnel.isDeleted, false)
-        )
+        ),
+        with: {
+            category: true,
+            specialty: true,
+        }
     })
     return found ?? null
 }, {

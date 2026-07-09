@@ -27,9 +27,9 @@ const columns: ColumnDef<Person>[] = [
         header: "Фото",
         cell: ({ row }) => (
             <img
-                src={row.original.avatar ? `/api/files/${row.original.avatar}` : "/images/default-avatar.png"}
+                src={row.original.avatar ? `/api/files/${row.original.avatar}` : "/images/default-avatar.svg"}
                 alt={row.original.name}
-                onError={(e) => { e.currentTarget.src = "/images/default-avatar.png" }}
+                onError={(e) => { e.currentTarget.src = "/images/default-avatar.svg" }}
                 className="w-10 h-10 object-cover rounded-full"
             />
         ),
@@ -112,7 +112,7 @@ function DeletePerson({ person }: { person: Person }) {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600">
+                <Button variant="outline" size="icon" className="text-red-500 cursor-pointer hover:text-red-600 rounded-lg">
                     <Trash2 />
                 </Button>
             </DialogTrigger>

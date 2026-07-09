@@ -1,26 +1,24 @@
 import Link from "next/link";
 import Image from "next/image";
 import { AboutCard } from "@/src/components/about/aboutCard";
-import { api } from "@/src/server/api";
 import { auth } from "@/src/server/auth/auth";
 import { headers as nextHeaders } from "next/headers"
 
 export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await nextHeaders(),
-  });
-  console.log(session)
   return (
     <div>
         <Welcome/>
         <About/>
     </div>
-  );
+  ); 
 }
 
- function Welcome() {
+async function Welcome() {
+  const session = await auth.api.getSession({ headers: await nextHeaders() })
+  const isLoggedIn = !!session?.user
+
   return(
-    <section className="w-full h-screen flex justify-center overflow-y-auto">
+    <section className="relative w-full max-h-250 h-screen flex justify-center overflow-y-auto">
       <div className="w-full h-full absolute z-0 pointer-events-none">
         <Image
           className="object-cover object-center"
@@ -34,10 +32,10 @@ export default async function Home() {
         <div className="z-10 relative text-center flex flex-col gap-6 items-center ">
           <div className="bg-blue-100 text-blue-600 flex rounded-full py-2 px-4 font-medium text-center w-fit lg:text-xl">Вместе сильнее!</div>
           <div className="flex flex-col gap-4">
-            <h1 className="font-semibold text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-br from-[#5D5D5D] via-[#1C1C1C] to-[#5D5D5D] max-w-[35ch]">
+            <h1 className="font-semibold text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-br from-muted-foreground via-primary to-muted-foreground max-w-[35ch]">
               TEAMNEST объединяем амбициозных для создания больших проектов
             </h1>
-            <p className="lg:text-xl text-gray-500 max-w-[60ch] mx-auto">
+            <p className="lg:text-xl text-muted-foreground max-w-[60ch] mx-auto">
               Мы объединяем
               <span className="font-semibold"> амбициозных </span>
               и
@@ -50,9 +48,15 @@ export default async function Home() {
           </div>
         </div>
 
-        <Link href="/" className="outline-offset-1 border-white w-full sm:w-fit text-center text-white bg-gray-950 py-3 px-4 rounded-xl lg:text-xl cursor-pointer font-medium hover:bg-gray-900 transition relative">
-          Зарегистрироваться
-        </Link>
+        {isLoggedIn ? (
+          <Link href="/profile/projects" className="outline-offset-1 border-white w-full sm:w-fit text-center text-white bg-primary py-3 px-4 rounded-xl lg:text-xl cursor-pointer font-medium hover:bg-primary/90 transition relative">
+            Создать стартап
+          </Link>
+        ) : (
+          <Link href="/auth/sign-up" className="outline-offset-1 border-white w-full sm:w-fit text-center text-white bg-primary py-3 px-4 rounded-xl lg:text-xl cursor-pointer font-medium hover:bg-primary/90 transition relative">
+            Зарегистрироваться
+          </Link>
+        )}
       </div>
 
     </section>
@@ -60,21 +64,20 @@ export default async function Home() {
 }
 
 async function  About () {
-  const personnel = (await api.personnel.get()).data;
   return(
-    <section className="py-12 px-16 text-center flex flex-col gap-12 items-center container mx-auto">
+    <section className="py-12 px-16 text-center flex flex-col gap-12 items-center container mx-auto z-30 relative">
      
       <div className="flex flex-col gap-4 items-center">
 
         <h2 className="
           font-semibold
           text-[clamp(24px,5vw,28px)] md:text-4xl lg:text-6xl
-          bg-clip-text text-transparent bg-gradient-to-br from-[#5D5D5D] via-[#1C1C1C] to-[#5D5D5D]
+          bg-clip-text text-transparent bg-gradient-to-br from-muted-foreground via-primary to-muted-foreground
           max-w-[30ch]
         ">
           Платформа для тех, кто хочет создавать, а не ждать
         </h2>
-        <p className="lg:text-xl text-gray-500 max-w-[60ch]">Мы помогаем находить команду, запускать стартапы и делать первые шаги к настоящим изменениям.</p>
+        <p className="lg:text-xl text-muted-foreground max-w-[60ch]">Мы помогаем находить команду, запускать стартапы и делать первые шаги к настоящим изменениям.</p>
       </div>
 
       <div className="">

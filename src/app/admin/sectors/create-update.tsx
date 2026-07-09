@@ -67,11 +67,11 @@ export function CreateUpdateSector({ sector }: { sector?: Sector }) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger >
         {sector ? (
-          <Button variant="outline" size="icon" className="cursor-pointer" >
+          <Button variant="outline" size="icon" className="cursor-pointer rounded-lg" >
             <Pencil />
           </Button>
         ) : (
-          <Button className="bg-gray-950 text-white hover:bg-gray-800 cursor-pointer px-4 py-3 h-auto rounded-xl">
+          <Button className="fixed bottom-2 right-0 left-0 mt-auto md:relative cursor-pointer">
             <Plus /> Создать сектор
           </Button>
         )}

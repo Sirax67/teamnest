@@ -27,12 +27,14 @@ export const sectorsRouter = new Elysia({
     
     const sectorsFromDb = await query.execute();
 
-    await redis.set(
-        "sectors", 
-        JSON.stringify(sectorsFromDb),
-        "EX",
-        60 * 60 * 24,
-    );
+    if (sectorsFromDb.length > 0) {
+        await redis.set(
+            "sectors",
+            JSON.stringify(sectorsFromDb),
+            "EX",
+            60 * 60 * 24,
+        );
+    }
     return sectorsFromDb
 })
 .get(

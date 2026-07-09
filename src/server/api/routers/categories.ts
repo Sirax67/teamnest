@@ -27,12 +27,14 @@ export const categoriesRouter = new Elysia({
 
     const categoriesFromDb = await query.execute();
 
-    await redis.set(
-        "categories", 
-        JSON.stringify(categoriesFromDb),
-        "EX",
-        60 * 60 * 24,
-    );
+    if (categoriesFromDb.length > 0) {
+        await redis.set(
+            "categories",
+            JSON.stringify(categoriesFromDb),
+            "EX",
+            60 * 60 * 24,
+        );
+    }
     return categoriesFromDb
 })
 
