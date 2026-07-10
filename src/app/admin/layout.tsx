@@ -3,6 +3,8 @@ import {headers as nextHeaders} from "next/headers"
 import { redirect } from "next/navigation";
 import { Sidebar } from "./sidebar";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminLayout ({
     children,
 }: {

@@ -4,6 +4,8 @@ import { AboutCard } from "@/src/components/about/aboutCard";
 import { auth } from "@/src/server/auth/auth";
 import { headers as nextHeaders } from "next/headers"
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   return (
     <div>
