@@ -249,7 +249,7 @@ export default function Header() {
                     )}
 
                     {!personnel && (
-                        <Link href="/auth/sign-up" className="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary/90 transition">
+                        <Link href="/auth/sign-up" className="bg-primary text-white px-4 py-2 rounded-xl hover:bg-primary/90 transition text-center mt-auto">
                             Зарегистрироваться
                         </Link>
                     )}
