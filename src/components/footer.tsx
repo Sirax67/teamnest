@@ -53,7 +53,7 @@ export function Footer () {
 
                 
 
-            <div className="flex flex-col gap-6 items-center">
+            <div className="flex flex-col gap-6 items-center lg:hidden">
                  <Link href="/" className="w-35 h-5 relative">
                     <Image 
                     src="/images/Logo-dark.svg"
