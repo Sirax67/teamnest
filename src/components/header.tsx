@@ -114,7 +114,7 @@ export default function Header() {
                                     </Link>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <Link href="/profile/responses"
+                                    <Link href="/profile/favorites"
                                         className="flex items-center gap-2 py-2"
                                     >
                                         <Star className="size-5"/>
@@ -123,7 +123,7 @@ export default function Header() {
                                 </DropdownMenuItem>
                                 {isAdmin && (
                                    <DropdownMenuItem>
-                                        <Link href="/profile/responses"
+                                        <Link href="/admin/categories"
                                             className="flex items-center gap-2 py-2"
                                         >
                                             <Settings className="size-5"/>
