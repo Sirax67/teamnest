@@ -155,7 +155,7 @@ export default function Header() {
             </div>
 
             {isOpen && (
-                <div className="fixed inset-0 bg-white z-40 flex flex-col gap-6 pt-24 p-6">
+                <div className="fixed inset-0 bg-white z-50 flex flex-col gap-6 pt-24 p-6">
 
                     
                     <nav className="flex flex-col gap-4">
