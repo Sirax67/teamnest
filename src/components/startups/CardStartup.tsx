@@ -62,7 +62,7 @@ export function StartupDialog({ startups, open, onClose }: { startups: Startup, 
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="md:min-w-155 p-0 gap-0">
+            <DialogContent className="md:min-w-155 p-0 gap-0 max-h-[70vh] overflow-y-auto">
                 <DialogHeader className="bg-card p-4 rounded-t-xl ">
                     <DialogTitle>{view === "project" ? "Просмотр стартапа" : "Просмотр вакансий"}</DialogTitle>
                 </DialogHeader>
