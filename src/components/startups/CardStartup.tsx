@@ -100,7 +100,7 @@ export function StartupDialog({ startups, open, onClose }: { startups: Startup, 
                             </p>
                             <p className="flex gap-2 text-muted-foreground">
                                 Проект:
-                                <Link href={startups.link} className="underline text-blue-600">
+                                <Link href={startups.link} className="underline text-blue-600 break-all">
                                     {startups.link}
                                 </Link>
                             </p>
