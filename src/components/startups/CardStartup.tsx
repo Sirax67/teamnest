@@ -62,7 +62,7 @@ export function StartupDialog({ startups, open, onClose }: { startups: Startup, 
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="md:min-w-155 p-0 gap-0 max-h-[70vh] overflow-y-auto">
+            <DialogContent className="md:min-w-155 p-0 gap-0 max-h-[80vh] overflow-y-auto">
                 <DialogHeader className="bg-card p-4 rounded-t-xl ">
                     <DialogTitle>{view === "project" ? "Просмотр стартапа" : "Просмотр вакансий"}</DialogTitle>
                 </DialogHeader>
@@ -127,7 +127,7 @@ export function StartupDialog({ startups, open, onClose }: { startups: Startup, 
                         {vacancies.length === 0 && (
                             <p className="text-sm text-gray-400 text-center py-8">Вакансий нет</p>
                         )}
-                        <div className="grid grid-cols-2 gap-3">
+                        <div className="grid lg:grid-cols-2 gap-3">
                             {vacancies.map((v: any) => (
                                 <div
                                     key={v.id}
@@ -142,7 +142,7 @@ export function StartupDialog({ startups, open, onClose }: { startups: Startup, 
                                         <p className="text-xs text-muted-foreground">{v.category.name}</p>
                                     )}
                                     {v.description && (
-                                        <p className=" text-muted-foreground leading-relaxed mt-1 line-clamp-4">{v.description}</p>
+                                        <p className=" text-muted-foreground line-clamp-4">{v.description}</p>
                                     )}
                                 </div>
                             ))}

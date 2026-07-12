@@ -42,13 +42,13 @@ export default function FavoritesPage() {
         <div className="py-20 md:mr-16 md:ml-60 flex flex-col gap-6 px-4">
             <h1 className="text-2xl md:text-3xl font-semibold">Избранное</h1>
 
-            <div className="flex items-center gap-1 bg-card rounded-full p-1 w-fit">
+            <div className="w-full flex-col flex md:flex-row items-center gap-2 bg-card rounded-xl p-1 md:w-fit">
                 {tabs.map(t => (
                     <button
                         key={t.id}
                         onClick={() => setTab(t.id)}
                         className={cn(
-                            "px-4 py-2 rounded-full text-sm transition-colors",
+                            "px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit",
                             tab === t.id ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"
                         )}
                     >
@@ -58,7 +58,9 @@ export default function FavoritesPage() {
             </div>
 
             {isLoading && (
-                <div className="flex items-center justify-center py-32 text-muted-foreground">Загружаем...</div>
+                <div className="flex items-center justify-center py-32 text-muted-foreground">
+                    Загружаем...
+                </div>
             )}
 
             {!isLoading && favStartups.length === 0 && favPersonnel.length === 0 && (

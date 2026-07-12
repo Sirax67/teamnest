@@ -14,10 +14,18 @@ type WithRelations<T> = T & {
     vacancy?: { specialty?: { name: string }; category?: { name: string } }
 }
 
-type IncomingApp = WithRelations<NonNullable<Awaited<ReturnType<typeof api.applications.incoming.get>>["data"]>[number]>
-type SentInv = WithRelations<NonNullable<Awaited<ReturnType<typeof api.invitations.sent.get>>["data"]>[number]>
-type MyApp = WithRelations<NonNullable<Awaited<ReturnType<typeof api.applications.my.get>>["data"]>[number]>
-type MyInv = WithRelations<NonNullable<Awaited<ReturnType<typeof api.invitations.my.get>>["data"]>[number]>
+type IncomingApp = WithRelations<
+    NonNullable<Awaited<ReturnType<typeof api.applications.incoming.get>>["data"]
+>[number]>
+type SentInv = WithRelations<
+    NonNullable<Awaited<ReturnType<typeof api.invitations.sent.get>>["data"]
+>[number]>
+type MyApp = WithRelations<
+    NonNullable<Awaited<ReturnType<typeof api.applications.my.get>>["data"]
+>[number]>
+type MyInv = WithRelations<
+    NonNullable<Awaited<ReturnType<typeof api.invitations.my.get>>["data"]
+>[number]>
 
 const statusLabel: Record<string, string> = {
     pending: "На рассмотрении",
@@ -68,14 +76,14 @@ export default function ProfileResponsesPage() {
     const isLoading = loadingMyApps || loadingIncoming || loadingSent || loadingMyInv
 
     return (
-        <div className="pt-18 mr-16 ml-60 flex flex-col gap-6">
+        <div className="pt-18 md:mr-16 md:ml-60 flex flex-col gap-6 px-4">
             <h1 className="text-3xl font-semibold">Отклики</h1>
 
-            <div className="grid grid-cols-2 border bg-gray-100 rounded-full p-1 w-fit">
+            <div className="w-full flex-col flex md:flex-row items-center gap-2 bg-card rounded-xl p-1 md:w-fit">
                 <Button
                     onClick={() => setRole("employer")}
                     variant="ghost"
-                    className={`px-4 py-2 rounded-full text-sm transition-colors
+                    className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                         ${role === "employer" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                 >
                     Я работодатель
@@ -83,7 +91,7 @@ export default function ProfileResponsesPage() {
                 <Button
                     onClick={() => setRole("seeker")}
                     variant="ghost"
-                    className={`px-4 py-2 rounded-full text-sm transition-colors
+                    className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                         ${role === "seeker" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                 >
                     Я соискатель
@@ -91,11 +99,11 @@ export default function ProfileResponsesPage() {
             </div>
 
             {role === "employer" && (
-                <div className="grid grid-cols-2 border bg-gray-100 rounded-full p-1 w-fit">
+                <div className="w-full flex-col flex md:flex-row items-center gap-2 bg-card rounded-xl p-1 md:w-fit">
                     <Button
                         onClick={() => setTab("incoming")}
                         variant="ghost"
-                        className={`px-4 py-2 rounded-full text-sm transition-colors
+                        className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                             ${tab === "incoming" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                     >
                         Входящие отклики
@@ -103,7 +111,7 @@ export default function ProfileResponsesPage() {
                     <Button
                         onClick={() => setTab("invitations")}
                         variant="ghost"
-                        className={`px-4 py-2 rounded-full text-sm transition-colors
+                        className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                             ${tab === "invitations" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                     >
                         Мои приглашения
@@ -112,7 +120,9 @@ export default function ProfileResponsesPage() {
             )}
 
             {isLoading && (
-                <div className="flex items-center justify-center py-32 text-gray-400">Загружаем...</div>
+                <div className="flex items-center justify-center py-32 text-muted-foreground">
+                    Загружаем...
+                </div>
             )}
 
             {!isLoading && (
@@ -120,7 +130,9 @@ export default function ProfileResponsesPage() {
                     {role === "employer" && tab === "incoming" && (
                         <div className="flex flex-col gap-3">
                             {!incomingApplications?.length && (
-                                <Empty text="Нет входящих откликов" />
+                                <div className="flex items-center justify-center py-32 text-muted-foreground">
+                                    Нет входящих откликов
+                                </div>
                             )}
                             {(incomingApplications as IncomingApp[])?.map((app) => (
                                 <div key={app.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-start">
@@ -139,7 +151,9 @@ export default function ProfileResponsesPage() {
                     {role === "employer" && tab === "invitations" && (
                         <div className="flex flex-col gap-3">
                             {!sentInvitations?.length && (
-                                <Empty text="Вы ещё не отправили приглашений" />
+                                <div className="flex items-center justify-center py-32 text-muted-foreground">
+                                    Вы еще не отправляли приглашений
+                                </div>
                             )}
                             {(sentInvitations as SentInv[])?.map((inv) => (
                                 <div key={inv.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-start">
@@ -157,11 +171,11 @@ export default function ProfileResponsesPage() {
 
                     {role === "seeker" && (
                         <div className="flex flex-col gap-4">
-                            <div className="grid grid-cols-2 border bg-gray-100 rounded-full p-1 w-fit">
+                            <div className="w-full flex-col flex md:flex-row items-center gap-2 bg-card rounded-xl p-1 md:w-fit">
                                 <Button
                                     onClick={() => setSeekerTab("applications")}
                                     variant="ghost"
-                                    className={`px-4 py-2 rounded-full text-sm transition-colors
+                                    className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                                         ${seekerTab === "applications" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                                 >
                                     Мои отклики
@@ -169,7 +183,7 @@ export default function ProfileResponsesPage() {
                                 <Button
                                     onClick={() => setSeekerTab("invitations")}
                                     variant="ghost"
-                                    className={`px-4 py-2 rounded-full text-sm transition-colors
+                                    className={`px-4 py-2 rounded-xl text-sm transition-colors w-full md:w-fit
                                         ${seekerTab === "invitations" ? "bg-white shadow-sm font-medium" : "text-muted-foreground hover:text-black"}`}
                                 >
                                     Приглашения
@@ -178,7 +192,11 @@ export default function ProfileResponsesPage() {
 
                             {seekerTab === "applications" && (
                                 <div className="flex flex-col gap-3">
-                                    {!myApplications?.length && <Empty text="Вы ещё не откликались" />}
+                                    {!myApplications?.length && 
+                                        <div className="flex items-center justify-center py-32 text-muted-foreground">
+                                            Вы еще не откликались
+                                        </div>
+                                    }
                                     {(myApplications as MyApp[])?.map((app) => (
                                         <div key={app.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-start">
                                             <div className="flex flex-col gap-1">
@@ -195,7 +213,11 @@ export default function ProfileResponsesPage() {
 
                             {seekerTab === "invitations" && (
                                 <div className="flex flex-col gap-3">
-                                    {!myInvitations?.length && <Empty text="Нет приглашений" />}
+                                    {!myInvitations?.length && 
+                                        <div className="flex items-center justify-center py-32 text-muted-foreground">
+                                            Нет приглашений
+                                        </div>
+                                    }
                                     {(myInvitations as MyInv[])?.map((inv) => (
                                         <div key={inv.id} className="border border-gray-200 rounded-xl p-4 flex justify-between items-center">
                                             <div className="flex flex-col gap-1">
@@ -218,7 +240,10 @@ export default function ProfileResponsesPage() {
                                                     </button>
                                                 </div>
                                             ) : (
-                                                <span className={`text-xs px-2 py-1 rounded-full ${statusColor[inv.status] ?? statusColor.pending}`}>
+                                                <span 
+                                                    className={`text-xs px-2 py-1 rounded-full 
+                                                    ${statusColor[inv.status] ?? statusColor.pending}`}>
+                                                    
                                                     {statusLabel[inv.status] ?? inv.status}
                                                 </span>
                                             )}

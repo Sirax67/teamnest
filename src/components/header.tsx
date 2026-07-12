@@ -240,7 +240,7 @@ export default function Header() {
 
                             <button
                                 onClick={() => authClient.signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/" } } })}
-                                className="flex items-center gap-2 py-2 text-red-500 cursor-pointer"
+                                className="flex items-center gap-2 py-2 text-red-500 cursor-pointer mt-auto"
                             >
                                 <LogOut className="size-5"/>
                                 Выйти

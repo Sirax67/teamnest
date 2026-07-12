@@ -14,22 +14,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
-import { Camera, ChevronLeft, Pencil, Search } from "lucide-react"
+import { Camera, ChevronLeft, Plus, X } from "lucide-react"
 
 type Personnel = NonNullable<Awaited<ReturnType<typeof api.personnel.get>>["data"]>[number]
 
 const STEPS = ["Данные", "Образование", "Специальность", "Навыки", "Контакты"]
 
-const SKILLS_BY_CATEGORY: Record<string, string[]> = {
-    "Бекенд": ["Node.js", "Bun", "Python", "Go", "Rust", "Java", "PHP", "C#", "PostgreSQL", "MongoDB", "Redis"],
-    "Фронтенд": ["React", "Vue", "Angular", "TypeScript", "Next.js", "Tailwind CSS", "HTML/CSS", "Vite"],
-    "Дизайн": ["Figma", "Photoshop", "Illustrator", "UI/UX", "Sketch", "After Effects"],
-    "Инженерия": ["Docker", "Kubernetes", "AWS", "Linux", "CI/CD", "Nginx", "Git"],
-    "Маркетинг": ["SEO", "SMM", "Таргет", "Контент-маркетинг", "Email-маркетинг", "Аналитика"],
-    "Менеджмент": ["Agile", "Scrum", "Kanban", "Управление командой", "Jira", "Notion"],
-    "Нейросети": ["PyTorch", "TensorFlow", "OpenAI API", "LangChain", "Computer Vision", "NLP"],
-    "Софт скиллы": ["Коммуникация", "Лидерство", "Тайм-менеджмент", "Публичные выступления", "Работа в команде"],
-}
 
 const stepSchemas = [
     z.object({ name: PersonnelSchema.shape.name, position: PersonnelSchema.shape.position, city: PersonnelSchema.shape.city, age: PersonnelSchema.shape.age }),
@@ -47,7 +37,7 @@ export function EditPersonnelDialog({ personnel }: { personnel: Personnel }) {
         personnel.avatar ? `/api/files/${personnel.avatar}` : null
     )
     const [stepErrors, setStepErrors] = useState<Record<string, string>>({})
-    const [skillSearch, setSkillSearch] = useState("")
+    const [skillInput, setSkillInput] = useState("")
 
     const { data: categories } = useQuery({
         queryKey: ["categories"],
@@ -321,54 +311,63 @@ export function EditPersonnelDialog({ personnel }: { personnel: Personnel }) {
                         <form.Field name="skills">
                             {(field) => (
                                 <div className="flex flex-col gap-3">
-                                    <p className="text-sm text-gray-500">
-                                        Выбрано:{" "}
-                                        <span className="font-medium text-gray-900">
-                                            {field.state.value.length > 0 ? field.state.value.join(", ") : "ничего не выбрано"}
-                                        </span>
-                                    </p>
-                                    <div className="relative">
-                                        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                        <input placeholder="Поиск навыка" value={skillSearch}
-                                            onChange={(e) => setSkillSearch(e.target.value)}
-                                            className="w-full h-9 pl-9 pr-3 rounded-lg border border-input bg-transparent text-sm outline-none" />
+                                    <div className="flex gap-2">
+                                        <input
+                                            placeholder="Введите навык"
+                                            value={skillInput}
+                                            onChange={(e) => setSkillInput(e.target.value)}
+                                            onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                    e.preventDefault()
+                                                    const trimmed = skillInput.trim()
+                                                    if (trimmed && !field.state.value.includes(trimmed)) {
+                                                        field.handleChange([...field.state.value, trimmed])
+                                                    }
+                                                    setSkillInput("")
+                                                }
+                                            }}
+                                            className="flex-1 h-10 px-3 rounded-lg border border-input bg-gray-50 text-sm outline-none focus:border-gray-400"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const trimmed = skillInput.trim()
+                                                if (trimmed && !field.state.value.includes(trimmed)) {
+                                                    field.handleChange([...field.state.value, trimmed])
+                                                }
+                                                setSkillInput("")
+                                            }}
+                                            className="flex items-center gap-1 px-4 py-2 rounded-lg bg-gray-950 text-white text-sm hover:bg-gray-800 transition cursor-pointer"
+                                        >
+                                            <Plus className="size-4" />
+                                            Добавить
+                                        </button>
                                     </div>
-                                    <Accordion type="single" collapsible className="flex flex-col gap-2">
-                                        {Object.entries(SKILLS_BY_CATEGORY).map(([category, skills]) => {
-                                            const filtered = skills.filter((s) => s.toLowerCase().includes(skillSearch.toLowerCase()))
-                                            if (filtered.length === 0) return null
-                                            return (
-                                                <AccordionItem key={category} value={category}
-                                                    className="border border-gray-200 rounded-xl px-4">
-                                                    <AccordionTrigger className="font-medium text-sm">{category}</AccordionTrigger>
-                                                    <AccordionContent>
-                                                        <div className="flex flex-wrap gap-2 pb-2">
-                                                            {filtered.map((skill) => {
-                                                                const selected = field.state.value.includes(skill)
-                                                                return (
-                                                                    <button key={skill} type="button"
-                                                                        onClick={() => {
-                                                                            if (selected) {
-                                                                                field.handleChange(field.state.value.filter((s) => s !== skill))
-                                                                            } else {
-                                                                                field.handleChange([...field.state.value, skill])
-                                                                            }
-                                                                        }}
-                                                                        className={cn(
-                                                                            "px-3 py-1.5 rounded-xl text-sm border transition-colors",
-                                                                            selected ? "bg-blue-100 text-blue-600 border-blue-600" : "bg-white border-gray-200 hover:bg-gray-50"
-                                                                        )}
-                                                                    >
-                                                                        {skill}
-                                                                    </button>
-                                                                )
-                                                            })}
-                                                        </div>
-                                                    </AccordionContent>
-                                                </AccordionItem>
-                                            )
-                                        })}
-                                    </Accordion>
+
+                                    {field.state.value.length > 0 && (
+                                        <div className="flex flex-wrap gap-2">
+                                            {field.state.value.map((skill) => (
+                                                <span
+                                                    key={skill}
+                                                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-sm bg-gray-100 border border-gray-200"
+                                                >
+                                                    {skill}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => field.handleChange(field.state.value.filter((s) => s !== skill))}
+                                                        className="cursor-pointer text-gray-400 hover:text-gray-700 transition"
+                                                    >
+                                                        <X className="size-3.5" />
+                                                    </button>
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+
+                                    {field.state.value.length === 0 && (
+                                        <p className="text-sm text-gray-400">Навыки не добавлены</p>
+                                    )}
+
                                     {stepErrors.skills && <p className="text-destructive text-sm">{stepErrors.skills}</p>}
                                 </div>
                             )}
@@ -389,7 +388,7 @@ export function EditPersonnelDialog({ personnel }: { personnel: Personnel }) {
 
                     <div className="flex justify-end pt-2">
                         {isLastStep ? (
-                            <Button type="submit" disabled={updateMutation.isPending}>
+                            <Button type="button" onClick={() => form.handleSubmit()} disabled={updateMutation.isPending}>
                                 {updateMutation.isPending ? "Сохраняем..." : "Сохранить"}
                             </Button>
                         ) : (
@@ -401,3 +400,4 @@ export function EditPersonnelDialog({ personnel }: { personnel: Personnel }) {
         </Dialog>
     )
 }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

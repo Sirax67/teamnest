@@ -21,7 +21,8 @@ export default function SignIn () {
         mutationKey: ["sign-in"],
         
         mutationFn: async (data: z.infer<typeof schema>) => {
-            await authClient.signIn.email(data);
+            const { error } = await authClient.signIn.email(data);
+            if (error) throw new Error(error.message);
         },
         onSuccess: () => {
             toast.success("Успешный вход")
@@ -43,8 +44,8 @@ export default function SignIn () {
     });
 
     return (
-        <div className="container mx-auto  w-full flex flex-col h-screen items-center justify-center">
-            <div className="flex flex-col gap-8  w-100">
+        <div className="container mx-auto px-4 w-full flex flex-col h-screen items-center justify-center">
+            <div className="flex flex-col gap-8 px-4 w-100">
                 <div className="w-full">
                     <Link href="/auth/sign-up" className="flex gap-2">
                         <MoveLeft/>

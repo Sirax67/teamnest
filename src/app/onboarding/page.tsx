@@ -507,7 +507,7 @@ export default function OnboardingPage() {
                                     Далее
                                 </Button>
                             ) : (
-                                <Button className="py-2 px-4 h-auto" type="submit" disabled={createMutation.isPending}>
+                                <Button className="py-2 px-4 h-auto" type="button" onClick={() => form.handleSubmit()} disabled={createMutation.isPending}>
                                     {createMutation.isPending ? "Сохраняем..." : "Завершить"}
                                 </Button>
                             )}

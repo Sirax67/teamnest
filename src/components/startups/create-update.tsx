@@ -163,6 +163,7 @@ export function CreateUpdateStartup({ startup, label }: { startup?: Startup, lab
     const form = useForm({
         defaultValues: {
             ...startup,
+            logo: startup?.logo ?? undefined,
             startDate: startup?.startDate
                 ? new Date(startup.startDate).toISOString().split("T")[0]
                 : undefined,
@@ -442,13 +443,13 @@ export function CreateUpdateStartup({ startup, label }: { startup?: Startup, lab
                                         )}
                                     </div>
 
-                                    <div className="flex gap-3">
+                                    <div className="flex flex-col lg:flex-row gap-4 ">
                                         <div className="flex flex-col gap-1 flex-1">
                                             <p className="text-sm text-gray-600">Направление <span className="text-red-400">*</span></p>
                                             <select
                                                 value={v.categoryId}
                                                 onChange={(e) => updateVacancy(i, { categoryId: e.target.value, specialtyId: undefined })}
-                                                className="border border-gray-200 rounded-xl py-2 px-3 text-sm outline-none"
+                                                className="border border-gray-200 rounded-xl py-2 px-3 text-sm outline-none truncate"
                                             >
                                                 <option value="">Выберите направление</option>
                                                 {categories?.map((c) => (

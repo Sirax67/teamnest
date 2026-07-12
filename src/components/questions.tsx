@@ -65,7 +65,7 @@ export function Questions () {
             </div>
 
             <Dialog open={open} onOpenChange={setOpen}>
-                <DialogContent className="md:min-w-125 p-0 gap-0 ">
+                <DialogContent className="md:min-w-125 p-0 gap-0">
                 <DialogHeader className="bg-card p-4 rounded-t-xl">
                     <DialogTitle>
                        Обратная связь
@@ -74,7 +74,7 @@ export function Questions () {
                     <div className="flex flex-col gap-4 p-4">
                         <Input placeholder="Имя" value={name} onChange={e => setName(e.target.value)} />
                         <Input placeholder="Почта" value={email} onChange={e => setEmail(e.target.value)} />
-                        <Textarea className="max-h-70" placeholder="Ваш вопрос" value={question} onChange={e => setQuestion(e.target.value)} />
+                        <Textarea className="max-h-70 break-all" placeholder="Ваш вопрос" value={question} onChange={e => setQuestion(e.target.value)} />
                         <div className="flex items-start gap-2">
                             <Checkbox id="terms" onCheckedChange={(val) => setChecked(val === true)} />
                             <label htmlFor="terms" className="text-sm text-muted-foreground cursor-pointer">

@@ -49,8 +49,8 @@ export default function SignUp() {
     })
 
     return (
-        <div className="container mx-auto w-full flex flex-col h-screen items-center justify-center">
-            <div className="flex flex-col gap-8 w-100">
+        <div className="container mx-auto px-4 w-full flex flex-col h-screen items-center justify-center">
+            <div className="flex flex-col gap-8 px-4 w-100">
                 <div className="w-full">
                     <Link href="/" className="flex gap-2">
                         <MoveLeft />

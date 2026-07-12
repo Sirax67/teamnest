@@ -52,7 +52,7 @@ export function PersonnelDialog({ personnel, open, onClose }: { personnel: Perso
 
     return (
         <Dialog open={open} onOpenChange={handleClose}>
-            <DialogContent className="md:min-w-155">
+            <DialogContent className="md:min-w-155 max-h-[80vh] overflow-y-auto">
                 <DialogHeader className="fixed bg-card p-4 w-full rounded-t-xl">
                     <DialogTitle>Просмотр кадра</DialogTitle>
                 </DialogHeader>
@@ -144,7 +144,7 @@ export function PersonnelDialog({ personnel, open, onClose }: { personnel: Perso
                         {(!myStartups || (myStartups as MyStartup[]).length === 0) ? (
                             <p className=" text-gray-400 py-8 text-center">У вас нет стартапов для приглашения</p>
                         ) : (
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid lg:grid-cols-2 gap-3">
                                 {(myStartups as MyStartup[]).map((s) => (
                                     <div
                                         key={s.id}
